@@ -1,0 +1,6 @@
+<template>
+    <NavigationComponents />
+
+    <AccommodationProfile />
+
+</template>

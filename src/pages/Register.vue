@@ -1,0 +1,3 @@
+<template>
+    <RegisterComponent />
+</template>
