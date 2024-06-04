@@ -4,6 +4,8 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
     // ----------------------------------------------------------------------------
+
+    //Guest View
     {
       path: '/',
       name: 'Homepage',
@@ -38,6 +40,8 @@ const router = createRouter({
       name: 'BookingPageApply',
       component: () => import('@/pages/guest/Apply.vue')
     },
+
+    // Logged-in View
     {
       path: '/booking/apply-membership/account/:account_id',
       name: 'BookingPageApplyLoggedIn',
@@ -51,7 +55,7 @@ const router = createRouter({
 
 
     /*=======================================================================
-    | ADMIN ROUTES                                                          |
+    ADMIN ROUTES                                                          
     ========================================================================*/
     {
       path: '/admin/dashboard',
@@ -138,7 +142,7 @@ const router = createRouter({
     },
 
     /*=======================================================================
-    | OWNER ROUTES                                                          |
+    OWNER ROUTES                                                          
     ========================================================================*/
     {
       path: '/owner/dashboard/:owner_id',
