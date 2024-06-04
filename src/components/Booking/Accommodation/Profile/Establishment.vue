@@ -69,7 +69,7 @@
         align-items: center;
         justify-content: center;
       ">
-      <v-card class="content-title" elevation="0" style="width: 72%"> 
+      <v-card class="content-title" elevation="0" style="width: 72%">
         <v-card-title class="grey--text text--darken-2">
           <h2 style="text-align: left; font-weight: 900; color: #1e4e72">
             Accommodation Rooms
@@ -81,7 +81,7 @@
     <!-- Room -->
 
     <section v-if="filteredRooms.length > 0">
-      <article v-for="(room, index) in filteredRooms" :key="index"  @click.prevent="openSignInDialog" >
+      <article v-for="(room, index) in filteredRooms" :key="index" @click.prevent="openSignInDialog">
         <div :class="['room-image', 'image' + (index + 1)]">
           <h4 class="room-type">{{ room.room_type }}</h4>
         </div>
@@ -109,6 +109,7 @@
       <h1>No room available</h1>
     </section>
 
+    
 
   </div>
 
@@ -444,11 +445,10 @@ section article {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   border-radius: 10px;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 section article:hover {
-
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }

@@ -51,7 +51,7 @@
                     <template v-if="filteredCards.length > 0">
                         <v-col v-for="(accommodation, index) in filteredCards" :key="index" cols="12" md="6" sm="12"
                             lg="4">
-                            <v-card 
+                            <v-card
                                 :to="account.id ? `/booking/establishment/profile/${accommodation.id}/account/${account.guest_id}` : `/booking/establishment/profile/${accommodation.id}`">
                                 <v-container :style="{
                                     height: '250px',
