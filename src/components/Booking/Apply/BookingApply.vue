@@ -467,36 +467,6 @@
                     </v-row>
                     <br /><br />
                     <hr />
-
-                    <v-col>
-                      <v-row style="
-                          width: 100%;
-                          display: flex;
-                          align-items: center;
-                          justify-content: left;
-                        ">
-                        <h4 style="margin-top: 10px">Account:</h4>
-                      </v-row>
-                      <v-row style="
-                          width: 100%;
-                          display: flex;
-                          align-items: center;
-                          justify-content: left;
-                        ">
-                        <h4>
-                          <v-icon icon="mdi-email" end></v-icon>
-                          {{ owner.owner_email }}
-                        </h4>
-                      </v-row>
-                      <v-row style="
-                          width: 100%;
-                          display: flex;
-                          align-items: center;
-                          justify-content: left;
-                        ">
-                        <h4><v-icon icon="mdi-key" end></v-icon> {{ password }} </h4>
-                      </v-row>
-                    </v-col>
                   </v-card-text>
 
                   <hr />
@@ -534,7 +504,6 @@ export default {
       establishment: {},
       membership: {},
       payment: {},
-      account: {},
 
       model: {
         owner: {
@@ -561,15 +530,6 @@ export default {
           establishment_contact_number: null,
           establishment_type: null,
           establishment_description: null,
-        },
-
-        account: {
-          first_name: null,
-          middle_name: null,
-          last_name: null,
-          email: null,
-          password: null,
-          account_type: null,
         },
 
         payment: {
@@ -804,8 +764,6 @@ export default {
         owner_birthdate: this.model.owner.owner_birthdate,
       };
 
-      this.password = this.model.owner.owner_first_name + this.model.owner.owner_last_name + 123;
-
       console.log(ownerData);
 
       try {
@@ -831,21 +789,11 @@ export default {
             this.model.establishment.establishment_contact_number,
           establishment_type: this.model.establishment.establishment_type,
           establishment_address: this.model.establishment.establishment_address,
+          show: "Private",
           establishment_name: this.model.establishment.establishment_name,
         };
 
-        const accountData = {
-          first_name: this.model.owner.owner_first_name,
-          middle_name: this.model.owner.owner_middle_name,
-          last_name: this.model.owner.owner_last_name,
-          email: this.model.owner.owner_email,
-          password: this.model.owner.owner_first_name + this.model.owner.owner_last_name + 123,
-          account_type: "Owner",
-          owner_id: owner_id,
-        };
-
         console.log(establishmentData);
-        console.log(accountData);
 
         // INSERT ESTABLISHMENT DATA
         const establishmentResponse = await axios.post(
@@ -856,23 +804,12 @@ export default {
         const establishment_id = establishmentResponse.data.Establishment.id;
         this.establishment = establishmentResponse.data.Establishment;
 
-        // INSERT ACCOUNT DATA
-        const accountResponse = await axios.post(
-          "http://127.0.0.1:8000/api/account",
-          accountData
-        );
-        console.log("Establishment data:", accountResponse.data);
-        const account_id = accountResponse.data.Account.id;
-        this.account = accountResponse.data.Account;
-
         console.log("Owner Data: " + this.owner);
         console.log("Establishment Data: " + this.establishment);
         console.log("Membership Data: " + this.membership);
         console.log("Payment Data: " + this.payment);
-        console.log("Account Data: " + this.account);
 
         console.log("Owner ID: " + owner_id);
-        console.log("Account ID: " + account_id);
         console.log("Establishment ID: " + establishment_id);
 
         this.paymentDialog = true;
@@ -905,13 +842,9 @@ export default {
         establishment_id: this.establishment.id,
         establishment_name: this.model.establishment.establishment_name,
       };
-
-
-
       console.log(membershipData);
 
-
-      // INSERT ACCOUNT DATA
+      // INSERT PAYMENT DATA
       const paymentResponse = await axios.post(
         "http://127.0.0.1:8000/api/membership_payment",
         paymentData
@@ -919,7 +852,6 @@ export default {
       console.log("Payment data:", paymentResponse.data);
       const membership_payment_id = paymentResponse.data.MembershipPayment.id;
       this.payment = paymentResponse.data.MembershipPayment;
-
 
       // INSERT MEMBERSHIP DATA
       const membershipResponse = await axios.post(
@@ -933,8 +865,7 @@ export default {
       console.log("Payment ID: " + membership_payment_id);
       console.log("Membership ID: " + membership_id);
 
-
-        this.model.owner.owner_first_name = "",
+      this.model.owner.owner_first_name = "",
         this.model.owner.owner_middle_name = "",
         this.model.owner.owner_last_name = "",
         this.model.owner.owner_contact_number = "",
