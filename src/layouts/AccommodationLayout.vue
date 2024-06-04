@@ -6,8 +6,8 @@
             <hr class="title-line-right">
         </v-dashboard-title>
     </v-container>
-
     <Accommodations />
+    
 </template>
 
 <style scoped>

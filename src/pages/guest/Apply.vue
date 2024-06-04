@@ -1,0 +1,4 @@
+<template>
+  <BookingApply />
+  <BookingNavigation />
+</template>

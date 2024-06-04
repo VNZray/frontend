@@ -1,0 +1,4 @@
+<template>
+    <BookingNavigation />
+    <GuestProfileComponent />
+</template>

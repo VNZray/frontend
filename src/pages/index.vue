@@ -1,3 +1,8 @@
+<script setup>
+import HomepageLayout from '../layouts/HomepageLayout.vue';
+</script>
+
 <template>
-    <LoginComponent />
+    <BookingNavigation />
+    <HomepageLayout />
 </template>

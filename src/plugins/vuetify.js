@@ -17,5 +17,6 @@ export default createVuetify({
   components: {
     VCalendar,
   },
+
 })
 

@@ -1,0 +1,4 @@
+<template>
+    <AdminNavigation />
+    <AccommodationProfile />
+</template>

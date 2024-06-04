@@ -1,0 +1,3 @@
+<template>
+    <CreatePassword />
+</template>
