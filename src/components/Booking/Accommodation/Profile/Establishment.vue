@@ -36,11 +36,6 @@
             {{ establishment.establishment_description }}
           </p>
 
-          <div class="check-in-btn" style="width: 100%">
-            <v-btn @click.prevent="openSignInDialog"
-              style="text-align: center; background-color: #1e4e72; color: white;">Sign-in</v-btn>
-          </div>
-
           <v-dialog v-model="showSignInialog" max-width="400">
             <v-card style="padding: 10px;">
               <v-card-text>
@@ -74,7 +69,7 @@
         align-items: center;
         justify-content: center;
       ">
-      <v-card class="content-title" elevation="0" style="width: 72%">
+      <v-card class="content-title" elevation="0" style="width: 72%"> 
         <v-card-title class="grey--text text--darken-2">
           <h2 style="text-align: left; font-weight: 900; color: #1e4e72">
             Accommodation Rooms
@@ -86,7 +81,7 @@
     <!-- Room -->
 
     <section v-if="filteredRooms.length > 0">
-      <article v-for="(room, index) in filteredRooms" :key="index">
+      <article v-for="(room, index) in filteredRooms" :key="index"  @click.prevent="openSignInDialog" >
         <div :class="['room-image', 'image' + (index + 1)]">
           <h4 class="room-type">{{ room.room_type }}</h4>
         </div>
@@ -449,6 +444,7 @@ section article {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   border-radius: 10px;
+  cursor:pointer;
 }
 
 section article:hover {
