@@ -1,9 +1,7 @@
 <template>
     <v-container style="padding: 10px 0;">
         <v-dashboard-title>
-            <hr class="title-line-left">
             <h1 style="color: #1E4E72;">Accommodations</h1>
-            <hr class="title-line-right">
         </v-dashboard-title>
     </v-container>
     <Accommodations />

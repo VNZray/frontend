@@ -1,9 +1,7 @@
 <template>
     <v-container style="padding: 10px 20px;">
         <v-dashboard-title>
-            <hr class="title-line-left">
             <h1 style="color: #1E4E72;">Applicants</h1>
-            <hr class="title-line-right">
         </v-dashboard-title>
     </v-container>
 

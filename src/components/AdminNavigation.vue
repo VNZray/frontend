@@ -18,7 +18,7 @@
                 to="/admin/membership-payment"></v-list-item>
             <v-list-item prepend-icon="mdi-account-multiple-outline" title="Members" value="members"
                 to="/admin/member/list"></v-list-item>
-            <v-list-item prepend-icon="mdi-office-building-outline" title="Establishment" value="establishment"
+            <v-list-item prepend-icon="mdi-office-building-outline" title="Establishments" value="establishment"
                 to="/admin/establishment/list"></v-list-item>
             <v-list-item prepend-icon="mdi-account-outline" title="Create Account" value="create-account"
                 to="/admin/create-account"></v-list-item>

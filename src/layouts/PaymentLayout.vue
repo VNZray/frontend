@@ -1,9 +1,7 @@
 <template>
     <v-container style="padding: 10px 20px; display: flex; flex-direction: column; align-items: center;">
       <v-dashboard-title>
-        <hr class="title-line-left">
         <h1>Payment</h1>
-        <hr class="title-line-right">
       </v-dashboard-title>
   
       <v-container>

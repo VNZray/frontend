@@ -83,11 +83,6 @@ const router = createRouter({
       component: () => import('@/pages/admin/Payment.vue')
     },
     {
-      path: '/admin/establishment/profile',
-      name: 'Profile',
-      component: () => import('@/pages/admin/Profile.vue')
-    },
-    {
       path: '/admin/member/list',
       name: 'Members',
       component: () => import('@/pages/admin/Members.vue')
@@ -101,37 +96,32 @@ const router = createRouter({
     // ----------------------------------------------------------------------
 
     {
-      path: '/admin/dashboard/admin/:account_id',
+      path: '/admin/dashboard/:account_id',
       name: 'AdminDashboard',
       component: () => import('@/pages/admin/Dashboard.vue')
     },
     {
-      path: '/admin/establishment/list/account/:account_id',
+      path: '/admin/establishment/:account_id',
       name: 'AdminEstablishment',
       component: () => import('@/pages/admin/Establsihments.vue')
     },
     {
-      path: '/admin/applicants/admin/:account_id',
+      path: '/admin/applicants/:account_id',
       name: 'AdminApplicants',
       component: () => import('@/pages/admin/Applicants.vue')
     },
     {
-      path: '/admin/apply-membership/admin/:account_id',
+      path: '/admin/apply-membership/:account_id',
       name: 'AddminApply',
       component: () => import('@/pages/admin/Apply.vue')
     },
     {
-      path: '/admin/membership-payment',
-      name: 'AdminPayment/admin/:account_id',
+      path: '/admin/membership-payment/:account_id',
+      name: 'AdminPayment',
       component: () => import('@/pages/admin/Payment.vue')
     },
     {
-      path: '/admin/establishment/profile/establishment/:establishment_id/admin/:account_id',
-      name: 'AdminEstablishmentProfile',
-      component: () => import('@/pages/admin/Profile.vue')
-    },
-    {
-      path: '/admin/member/list/admin/:account_id',
+      path: '/admin/member/list/:account_id',
       name: 'AdminMembers',
       component: () => import('@/pages/admin/Members.vue')
     },
