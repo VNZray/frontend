@@ -3,7 +3,7 @@ import AdminAccount from '../../layouts/AdminAccount.vue';
 </script>
 
 <template>
-        <AdminNavigation />
+    <AdminNavigation />
 
     <AdminAccount />
 </template>

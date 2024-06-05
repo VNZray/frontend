@@ -1,10 +1,30 @@
 <template>
-  <v-container class="d-flex justify-center align-center" fluid style="padding: 0 25px 20px 25px;">
-    <v-row align="center" justify="left">
-      <v-col cols="12">
+
+  <v-container>
+    <v-row>
+      <v-col cols="6" >
         <v-text-field v-model="searchQuery" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
           hide-details single-line @input="search"></v-text-field>
       </v-col>
+
+      <v-col>
+        <v-select label="Select Status" variant="outlined"></v-select>
+      </v-col>
+
+      <v-col>
+        <v-select label="Select Owner" variant="outlined"></v-select>
+      </v-col>
+
+      <v-col>
+        <v-select label="Establishment Type" variant="outlined"></v-select>
+      </v-col>
+    </v-row>
+
+  </v-container>
+
+  <v-container>
+    <v-row align="center" justify="left">
+
       <v-col v-for="(card, index) in filteredCards" :key="index" cols="6" md="3" sm="4" lg="3">
         <v-card class="mx-auto" link="" to="/profile">
           <v-container

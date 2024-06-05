@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-layout>
-      <v-main>
+      <v-main style="min-height: 100vh; max-height: auto" >
         <router-view />
       </v-main>
     </v-layout>
