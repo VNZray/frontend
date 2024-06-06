@@ -18,12 +18,13 @@
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
                                     <v-text-field label="First Name:" variant="outlined" type="text" id="first_name"
-                                        name="first_name" v-model="model.account.first_name" required></v-text-field>
+                                        name="first_name" v-model="model.guest.guest_first_name"
+                                        required></v-text-field>
                                 </v-col>
 
                                 <v-col style="padding: 10px 15px;">
                                     <v-text-field label="Middle Name:" variant="outlined" type="text" id="middle_name"
-                                        name="middle_name" v-model="model.account.middle_name"></v-text-field>
+                                        name="middle_name" v-model="model.guest.guest_middle_name"></v-text-field>
                                 </v-col>
 
                             </v-row>
@@ -32,7 +33,7 @@
 
                                 <v-col style="padding: 10px 15px;">
                                     <v-text-field label="Last Name:" variant="outlined" type="text" id="last_name"
-                                        name="last_name" v-model="model.account.last_name" required></v-text-field>
+                                        name="last_name" v-model="model.guest.guest_last_name" required></v-text-field>
                                 </v-col>
                             </v-row>
 
@@ -59,8 +60,8 @@
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-combobox label="Municipality" :items="municipality_options"
-                                        variant="outlined" type="text" id="municipality" name="municipality"
+                                    <v-combobox label="Municipality" :items="municipality_options" variant="outlined"
+                                        type="text" id="municipality" name="municipality"
                                         v-model="model.guest.municipality" required></v-combobox>
                                 </v-col>
 
@@ -112,9 +113,7 @@ export default {
         return {
             model: {
                 account: {
-                    first_name: "",
-                    middle_name: "",
-                    last_name: "",
+                    name: "",
                     email: "",
                     password: "",
                 },
@@ -320,9 +319,9 @@ export default {
             this.isLoading = true;
 
             const guestData = {
-                guest_first_name: this.model.account.first_name,
-                guest_middle_name: this.model.account.middle_name,
-                guest_last_name: this.model.account.last_name,
+                guest_first_name: this.model.guest.guest_first_name,
+                guest_middle_name: this.model.guest.guest_middle_name,
+                guest_last_name: this.model.guest.guest_last_name,
                 guest_email: this.model.account.email,
                 guest_contact_no: this.model.guest.contact_number,
                 guest_province: this.model.guest.province,
@@ -336,9 +335,7 @@ export default {
                 const guest_id = guestResponse.data.Guest.id;
 
                 const accountData = {
-                    first_name: this.model.account.first_name,
-                    middle_name: this.model.account.middle_name,
-                    last_name: this.model.account.last_name,
+                    name: this.model.guest.guest_first_name + " " + this.model.guest.guest_last_name,
                     email: this.model.account.email,
                     password: this.model.account.password,
                     account_type: "Guest",
@@ -368,9 +365,7 @@ export default {
 
         clearForm() {
             this.model.account = {
-                first_name: "",
-                middle_name: "",
-                last_name: "",
+                name: "",
                 email: "",
                 password: "",
             };
