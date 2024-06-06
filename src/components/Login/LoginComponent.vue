@@ -89,7 +89,7 @@ export default {
               this.$router.push("/admin/dashboard");
             } else if (this.account_type === 'Guest' && account.account_type === 'Guest') {
               this.$router.push(`/booking/establishment/account/${account.guest_id}`);
-            } else if (this.account_type === 'Owner' && account.account_type === 'Owner') {
+            } else if (this.account_type === 'Owner' && account.account_type === 'Member') {
               this.$router.push(`/owner/dashboard/${account.owner_id}`);
             } else {
               this.emailError = "Login failed. Account type mismatch.";
