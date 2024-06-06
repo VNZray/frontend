@@ -21,8 +21,7 @@
           <a href="#" @click.prevent="showLogoutDialog">Logout</a>
         </li>
         <li>
-          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">{{ account.first_name
-            + " " + account.last_name }}</RouterLink>
+          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">{{ account.name }}</RouterLink>
         </li>
       </ul>
     </v-navigation>
