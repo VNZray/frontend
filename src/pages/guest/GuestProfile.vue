@@ -1,4 +1,4 @@
 <template>
-    <BookingNavigation />
+    <GuestNavigation />
     <GuestProfileComponent />
 </template>

@@ -228,7 +228,7 @@ export default {
         },
         async fetchEstablishments() {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/establishment`);
+                const response = await axios.get(`http://127.0.0.1:8000/api/establishment/private`);
                 console.log("Establishments data:", response.data);
                 const establishments = response.data.Establishment.filter(est => est.owner_id === this.owner.id);
                 this.establishments = establishments;

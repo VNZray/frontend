@@ -52,6 +52,11 @@ const router = createRouter({
       name: 'GuestProfile',
       component: () => import('@/pages/guest/GuestProfile.vue')
     },
+    {
+      path: '/booking/my-booking/:account_id',
+      name: 'guestBooking',
+      component: () => import('@/pages/guest/booking.vue')
+    },
 
 
     /*=======================================================================

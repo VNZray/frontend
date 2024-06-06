@@ -2,13 +2,14 @@
     <v-container style="padding-bottom: 0;">
         <v-row>
             <v-col cols="6">
-                <v-text-field style="color: #1E4E72; font-weight: 600;" v-model="searchQuery" prepend-inner-icon="mdi-magnify" label="Search"
-                    variant="outlined"></v-text-field>
+                <v-text-field style="color: #1E4E72; font-weight: 600;" v-model="searchQuery"
+                    prepend-inner-icon="mdi-magnify" label="Search" variant="outlined"></v-text-field>
             </v-col>
 
             <v-col cols="2">
-                <v-select style="color: #1E4E72; font-weight: 600;" v-model="filteredAccountType" label="Filter by Account Type"
-                    :items="['Guest', 'Admin', 'Member']" variant="outlined" @change="filterAccounts"></v-select>
+                <v-select style="color: #1E4E72; font-weight: 600;" v-model="filteredAccountType"
+                    label="Filter by Account Type" :items="['Guest', 'Admin', 'Member']" variant="outlined"
+                    @change="filterAccounts"></v-select>
             </v-col>
         </v-row>
     </v-container>
@@ -17,31 +18,36 @@
 
         <v-row>
             <v-col cols="8">
-                <v-table>
-                    <thead style="background-color: #1E4E72; color: white;">
-                        <tr>
-                            <th class="text-left">User ID</th>
-                            <th class="text-left">Name</th>
-                            <th class="text-left">Email</th>
-                            <th class="text-center">Created At</th>
-                            <th class="text-center">Updated At</th>
-                        </tr>
-                    </thead>
-                </v-table>
-                <v-card elevation="6" style="height: 673px; overflow: auto;">
+                <v-card elevation="6">
                     <v-table>
-                        <tbody>
+                        <thead style="background-color: #1E4E72; color: white;">
+                            <tr>
+                                <th class="text-left">User ID</th>
+                                <th class="text-left">Name</th>
+                                <th class="text-left">Email</th>
+                                <th class="text-left">Created At</th>
+                                <th class="text-left">Updated At</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody style="max-height: 672px; overflow: auto;">
                             <tr v-for="(acc, index) in filteredAccounts" :key="index"
                                 :class="{ 'even-row': index % 2 === 0 }">
                                 <td>{{ acc.id }}</td>
                                 <td>{{ acc.name }}</td>
                                 <td>{{ acc.email }}</td>
-                                <td class="text-center">{{ formatDate(acc.created_at) }}</td>
-                                <td class="text-center">{{ formatDate(acc.updated_at) }}</td>
+                                <td class="text-left">{{ formatDate(acc.created_at) }}</td>
+                                <td class="text-left">{{ formatDate(acc.updated_at) }}</td>
+                                <td class="text-center" style="width: 150px;">
+                                    <v-btn style="background-color: transparent" elevation="0" icon
+                                        @click="editAccount(acc)">
+                                        <v-icon color="primary">mdi-pencil</v-icon></v-btn>
+                                    <v-btn style="background-color: transparent" elevation="0" icon
+                                        @click="deleteAccount(acc)">
+                                        <v-icon color="red">mdi-delete</v-icon></v-btn>
+                                </td>
                             </tr>
-
                         </tbody>
-
                     </v-table>
                 </v-card>
             </v-col>
@@ -62,36 +68,36 @@
 
                         <v-row>
                             <v-col>
-                                <v-select v-model="model.account.name" label="Name:" variant="outlined"
-                                    :items="ownerNames"></v-select>
+                                <v-combobox prepend-inner-icon="mdi-account" v-model="model.account.name" label="Name:"
+                                    variant="outlined" :items="ownerNames"></v-combobox>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col>
-                                <v-text-field v-model="model.account.email" label="Email:" type="email"
-                                    variant="outlined"></v-text-field>
+                                <v-text-field prepend-inner-icon="mdi-email" v-model="model.account.email"
+                                    label="Email:" type="email" variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col>
-                                <v-text-field v-model="model.account.password" label="Password:" type="password"
-                                    variant="outlined"></v-text-field>
+                                <v-text-field prepend-inner-icon="mdi-lock" v-model="model.account.password"
+                                    label="Password:" type="password" variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col>
-                                <v-text-field label="Confirm Password:" type="password"
-                                    variant="outlined"></v-text-field>
+                                <v-text-field v-model="confirm_password" prepend-inner-icon="mdi-lock"
+                                    label="Confirm Password:" type="password" variant="outlined"></v-text-field>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col>
-                                <v-select v-model="model.account.account_type" label="Account Type"
-                                    :items="['Admin', 'Member']" variant="outlined"></v-select>
+                                <v-select prepend-inner-icon="mdi-account-group" v-model="model.account.account_type"
+                                    label="Account Type" :items="['Admin', 'Member']" variant="outlined"></v-select>
                             </v-col>
                         </v-row>
 
@@ -118,6 +124,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            confirm_password: null,
             owner: [],
             account: [],
             model: {
@@ -214,6 +221,23 @@ export default {
                 guest_id: null,
                 owner_id: null,
             };
+
+            this.confirm_password = null;
+        },
+        deleteAccount(account) {
+            const accountId = account.id;
+            axios
+                .delete(`http://127.0.0.1:8000/api/account/${accountId}/delete`)
+                .then(response => {
+                    // Filter out the deleted account from the list
+                    this.account = this.account.filter(acc => acc.id !== accountId);
+                    // Reapply filters if necessary
+                    this.filterAccounts();
+                    console.log(`Account with ID ${accountId} has been deleted.`);
+                })
+                .catch(error => {
+                    console.error("Error deleting account:", error);
+                });
         },
         formatDate(date) {
             return new Date(date).toLocaleDateString();

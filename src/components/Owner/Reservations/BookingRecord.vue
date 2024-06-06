@@ -15,7 +15,7 @@
         <v-card elevation="4">
             <v-table>
                 <thead>
-                    <tr>
+                    <tr style="background-color: #1e4e72; color: white;">
                         <th class="text-left">Name</th>
                         <th class="text-left">Booking Date</th>
                         <th class="text-left">Check-in Date</th>
@@ -23,12 +23,12 @@
                         <th class="text-left">Status</th>
                     </tr>
                 </thead>
-                <tbody v-if="bookings.length === 0">
+                <tbody v-if="bookings.length === 0" style="height: 690px;">
                     <tr>
                         <td colspan="5" class="text-center">Loading...</td>
                     </tr>
                 </tbody>
-                <tbody v-else>
+                <tbody v-else style="height: 690px; overflow: auto;">
                     <tr v-for="booking in filteredBookings" :key="booking.id">
                         <td>{{ findGuestName(booking.id) }}</td>
                         <td>{{ formatDate(booking.booking_date) }}</td>
