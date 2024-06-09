@@ -20,7 +20,7 @@
           <v-dialog v-model="dialog" max-width="600" style="height: auto">
             <v-card>
               <v-card-actions>
-                <BookingForm @closeDialog="closeDialog" />
+                <BookingForm :selectedRoom="selectedRoom" @closeDialog="closeDialog" />
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -77,7 +77,7 @@
     <!-- Room -->
 
     <section v-if="filteredRooms.length > 0 && account.id">
-      <article v-for="(room, index) in filteredRooms" :key="index" @click="openDialog">
+      <article v-for="(room, index) in filteredRooms" :key="index" @click="openDialog(room)">
         <div :class="['room-image', 'image' + (index + 1)]">
           <h4 class="room-type">{{ room.room_type }}</h4>
         </div>
@@ -153,7 +153,8 @@ export default {
       account: {},
       rooms: [],
       loading: true,
-      showSignInialog: false
+      showSignInialog: false,
+      selectedRoom: null,
     };
   },
   created() {
@@ -224,7 +225,7 @@ export default {
     },
     fetchRooms() {
       axios
-        .get(`http://127.0.0.1:8000/api/room`)
+        .get(`http://127.0.0.1:8000/api/room/available`)
         .then((response) => {
           const roomData = response.data.Room;
 
@@ -259,7 +260,8 @@ export default {
           this.loading = false;
         });
     },
-    openDialog() {
+    openDialog(room) {
+      this.selectedRoom = room;
       this.dialog = true;
     },
     closeDialog() {
@@ -529,5 +531,4 @@ section article:hover {
   color: #1e4e72;
   font-weight: 700;
 }
-
 </style>

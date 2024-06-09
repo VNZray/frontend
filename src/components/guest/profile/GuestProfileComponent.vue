@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <v-container style="padding-top: 80px; width: 80%;">
+        <v-container style="padding-top: 80px; width: 70%;">
             <v-row>
                 <v-col cols="5" style="padding: 20px;">
                     <v-card style="
@@ -180,18 +180,16 @@ export default {
     background-color: #f8f8ff;
 }
 
-.v-card {}
-
 .profile {
-    height: 500px;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .image-container {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     border: 10px solid #1e4e722c;
 }
@@ -219,6 +217,7 @@ h2 {
 h3 {
     text-align: left;
     font-size: 20px;
+    font-weight: normal;
 }
 
 hr {

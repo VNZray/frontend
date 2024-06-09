@@ -86,7 +86,7 @@ export default {
 
           if (response.data.status === 200) {
             if (this.account_type === 'Admin' && account.account_type === 'Admin') {
-              this.$router.push("/admin/dashboard");
+              this.$router.push(`/admin/dashboard/${account.owner_id}`);
             } else if (this.account_type === 'Guest' && account.account_type === 'Guest') {
               this.$router.push(`/booking/establishment/account/${account.guest_id}`);
             } else if (this.account_type === 'Member' && account.account_type === 'Member') {

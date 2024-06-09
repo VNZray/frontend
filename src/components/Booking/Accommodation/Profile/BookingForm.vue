@@ -108,9 +108,9 @@
 
                         <v-row>
                             <v-col style="padding: 10px 15px">
-                                <v-combobox v-model="model.payment.payment_type" label="Payment Type"
+                                <v-select v-model="model.payment.payment_type" label="Payment Type"
                                     :items="['Partial', 'Full Payment']" variant="outlined" type="text"
-                                    id="payment_type" name="payment_type" required></v-combobox>
+                                    id="payment_type" name="payment_type" required></v-select>
                             </v-col>
                         </v-row>
 
@@ -198,7 +198,7 @@
 
                         <v-row>
                             <v-col style="padding-top: 0;">
-                                <h4>{{ "Paymend ID: " + payment.reference_id }} </h4>
+                                <h4>{{ "Paymend ID: " + payment.id }} </h4>
                             </v-col>
 
                             <v-col style="padding-top: 0;">
@@ -252,6 +252,12 @@ import axios from 'axios';
 import html2canvas from 'html2canvas';
 
 export default {
+    props: {
+        selectedRoom: {
+            type: Object,
+            required: true,
+        },
+    },
     data: () => ({
         current_date: null,
 
@@ -339,7 +345,7 @@ export default {
                 booking_total_pax: this.model.booking.booking_total_pax,
                 booking_date: this.current_date,
                 check_in_date: this.formatDateToYYYYMMDD(this.model.booking.check_in_date),
-                booking_status: "Booked",
+                booking_status: "Pending",
                 check_out_date: this.formatDateToYYYYMMDD(this.model.booking.check_out_date),
                 note: this.model.booking.note,
             };
@@ -453,6 +459,9 @@ export default {
         this.fetchEstablishment();
         this.fetchEstablishmentId();
         this.getCurrentDate();
+    },
+    mounted() {
+        this.model.booking.room_number = this.selectedRoom.room_number;
     },
 };
 </script>

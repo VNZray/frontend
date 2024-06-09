@@ -1,6 +1,6 @@
 <template>
 
-        <!--Reservations-->
+    <!--Reservations-->
 
     <v-container>
         <v-row>
@@ -10,8 +10,8 @@
             </v-col>
 
             <v-col md="3" sm="6" cols="12">
-                <v-select label="Select Status" :items="['Booked', 'Checked-in', 'Checked-out']" v-model="selectedStatus"
-                    variant="outlined"></v-select>
+                <v-select label="Select Status" :items="['Pending', 'Booked', 'Checked-in']"
+                    v-model="selectedStatus" variant="outlined"></v-select>
             </v-col>
 
             <v-col md="3" sm="6" cols="12">
@@ -58,7 +58,7 @@
                                             <v-row>
                                                 <h4 style="text-align: left;">Date: {{
                                                     formatDate(findCheckInDate(booking.id))
-                                                    }}</h4>
+                                                }}</h4>
                                             </v-row>
 
                                             <v-row>
@@ -67,7 +67,11 @@
                                             </v-row>
 
                                             <v-row style="margin-top: 20px;">
-                                                <v-btn @click="selectBookingDetails(booking)"
+                                                <v-btn v-if="booking.booking_status === 'Pending'" @click="confirmBooking(booking)"
+                                                    style="background-color: #1E4E72; color: white; width: 95%;">
+                                                    Confirm
+                                                </v-btn>
+                                                <v-btn v-else @click="selectBookingDetails(booking)"
                                                     style="background-color: #1E4E72; color: white;">
                                                     View Full Details
                                                 </v-btn>
@@ -163,14 +167,17 @@
                     </v-col>
 
                     <v-col>
-                        <v-btn color="secondary" style="width: 100%;"
-                            @click="checkInBooking(selectedDetails)">Check-in</v-btn>
+                        <v-btn v-if="showCheckInButton" @click="checkInBooking(selectedDetails)"
+                            style="background-color: #1E4E72; color: white; width: 100%;">
+                            Check-in
+                        </v-btn>
+
+                        <v-btn v-if="showCheckOutButton" @click="checkOutBooking(selectedDetails)"
+                            style="background-color: #1E4E72; color: white; width: 100%;">
+                            Check-out
+                        </v-btn>
                     </v-col>
 
-                    <v-col>
-                        <v-btn color="primary" style="width: 100%;"
-                            @click="checkOutBooking(selectedDetails)">Check-out</v-btn>
-                    </v-col>
                 </v-row>
             </v-card-text>
         </v-card>
@@ -178,6 +185,7 @@
 </template>
 
 <script>
+import Booking from '@/pages/guest/booking.vue';
 import axios from 'axios';
 import { format } from 'date-fns';
 
@@ -191,9 +199,11 @@ export default {
             bookings: [],
             establishments: [],
             selectedEstablishment: null,
-            selectedStatus: 'Booked',  // Set default status to "Booked"
+            selectedStatus: 'Pending',  // Set default status to "Pending"
             dialog: false,
             selectedDetails: null,
+            showCheckInButton: false,
+            showCheckOutButton: false,
         };
     },
     created() {
@@ -202,7 +212,7 @@ export default {
         this.fetchGuestBooking();
     },
     methods: {
-        viewRecords(){
+        viewRecords() {
             const owner_id = this.$route.params.owner_id;
             this.$router.push(`/owner/booking_records/${owner_id}`);
         },
@@ -210,6 +220,9 @@ export default {
             this.selectedDetails = booking;
             console.log(this.selectedDetails);
             this.dialog = true;
+
+            this.showCheckInButton = booking.booking_status === 'Booked';
+            this.showCheckOutButton = booking.booking_status === 'Checked-in';
         },
         closeBookingDialog() {
             this.dialog = false;
@@ -285,6 +298,17 @@ export default {
         formatDate(date) {
             return format(new Date(date), 'MMMM d, yyyy');
         },
+        async confirmBooking(booking) {
+            try {
+                const response = await axios.put(`http://127.0.0.1:8000/api/booking/${booking.id}`, {
+                    booking_status: 'Booked'
+                });
+                console.log("Booking status updated to Checked-in:", response.data);
+                booking.booking_status = 'Booked';
+            } catch (error) {
+                console.error("Error updating booking status to Checked-in:", error);
+            }
+        },
         async checkInBooking(booking) {
             try {
                 const response = await axios.put(`http://127.0.0.1:8000/api/booking/${booking.id}`, {
@@ -292,6 +316,7 @@ export default {
                 });
                 console.log("Booking status updated to Checked-in:", response.data);
                 booking.booking_status = 'Checked-in';
+                this.closeBookingDialog();
             } catch (error) {
                 console.error("Error updating booking status to Checked-in:", error);
             }
@@ -303,6 +328,7 @@ export default {
                 });
                 console.log("Booking status updated to Checked-out:", response.data);
                 booking.booking_status = 'Checked-out';
+                this.closeBookingDialog();
             } catch (error) {
                 console.error("Error updating booking status to Checked-out:", error);
             }
@@ -312,8 +338,11 @@ export default {
         filteredBookings() {
             if (!this.selectedStatus) {
                 return this.bookings;
+            } else if (this.selectedStatus === 'Pending') {
+                return this.bookings.filter(booking => booking.booking_status === 'Pending');
+            } else {
+                return this.bookings.filter(booking => booking.booking_status === this.selectedStatus);
             }
-            return this.bookings.filter(booking => booking.booking_status === this.selectedStatus);
         }
     },
     watch: {
@@ -330,8 +359,6 @@ export default {
     }
 };
 </script>
-
-
 
 <style scoped>
 .number_container {
