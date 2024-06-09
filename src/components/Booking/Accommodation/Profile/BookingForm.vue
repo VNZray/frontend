@@ -28,21 +28,15 @@
 
                         <v-row>
                             <v-col style="padding: 10px 15px">
-                                <v-text-field v-model="model.booking.check_in_date" class="custom-text-field"
-                                    label="Check-in Date:" placeholder="YYYY-MM-DD" variant="outlined"
-                                    :error-messages="errors.checkInDate" @blur="validateDate('checkInDate')"
-                                    prepend-inner-icon="mdi-calendar" type="text" id="check_in_date"
-                                    name="check_in_date" required></v-text-field>
+                                <v-date-input v-model="model.booking.check_in_date" prepend-icon=""
+                                    prepend-inner-icon="mdi-calendar" variant="outlined"></v-date-input>
                             </v-col>
                         </v-row>
 
                         <v-row>
                             <v-col style="padding: 10px 15px">
-                                <v-text-field v-model="model.booking.check_out_date" class="custom-text-field"
-                                    label="Check-out Date:" placeholder="YYYY-MM-DD" variant="outlined"
-                                    :error-messages="errors.checkOutDate" @blur="validateDate('checkOutDate')"
-                                    prepend-inner-icon="mdi-calendar" type="text" id="check_out_date"
-                                    name="check_out_date" required></v-text-field>
+                                <v-date-input v-model="model.booking.check_out_date" prepend-icon=""
+                                    prepend-inner-icon="mdi-calendar" variant="outlined"></v-date-input>
                             </v-col>
                         </v-row>
 
@@ -259,7 +253,7 @@ import html2canvas from 'html2canvas';
 
 export default {
     data: () => ({
-        current_date: "",
+        current_date: null,
 
         tab: "booking",
         dialog: false,
@@ -272,34 +266,41 @@ export default {
 
 
         errors: {
-            check_in_date: "",
-            check_out_date: ""
+            check_in_date: null,
+            check_out_date: null
         },
 
         model: {
             booking: {
-                guest_id: "",
-                establishment_id: "",
-                room_number: "",
-                booking_total_pax: "",
-                booking_date: "",
-                check_in_date: "",
-                check_out_date: "",
-                note: ""
+                guest_id: null,
+                establishment_id: null,
+                room_number: null,
+                booking_total_pax: null,
+                booking_date: null,
+                check_in_date: null,
+                check_out_date: null,
+                note: null
             },
             payment: {
-                booking_id: "",
-                payment_amount: "",
-                payment_method: "",
-                payment_type: "",
-                reference_number: "",
-                number_of_day: "",
-                number_of_night: ""
+                booking_id: null,
+                payment_amount: null,
+                payment_method: null,
+                payment_type: null,
+                reference_number: null,
+                number_of_day: null,
+                number_of_night: null
             }
         }
 
     }),
     methods: {
+        formatDateToYYYYMMDD(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
         async downloadReceipt() {
             const receiptElement = document.getElementById('receipt-content');
             const canvas = await html2canvas(receiptElement);
@@ -320,7 +321,7 @@ export default {
             this.dialog = true;
         },
         nextTab() {
-            if (this.tab === "booking" && this.validateForm()) {
+            if (this.tab === "booking") {
                 this.tab = "payment";
             }
         },
@@ -330,74 +331,59 @@ export default {
             }
         },
         async submitBooking() {
-            if (this.validateForm()) {
 
-                const bookingData = {
-                    guest_id: this.account.guest_id,
-                    establishment_id: this.establishment.id,
-                    room_number: this.model.booking.room_number,
-                    booking_total_pax: this.model.booking.booking_total_pax,
-                    booking_date: this.current_date,
-                    check_in_date: this.model.booking.check_in_date,
-                    booking_status: "Booked",
-                    check_out_date: this.model.booking.check_out_date,
-                    note: this.model.booking.note,
+            const bookingData = {
+                guest_id: this.account.guest_id,
+                establishment_id: this.establishment.id,
+                room_number: this.model.booking.room_number,
+                booking_total_pax: this.model.booking.booking_total_pax,
+                booking_date: this.current_date,
+                check_in_date: this.formatDateToYYYYMMDD(this.model.booking.check_in_date),
+                booking_status: "Booked",
+                check_out_date: this.formatDateToYYYYMMDD(this.model.booking.check_out_date),
+                note: this.model.booking.note,
+            };
+
+            console.log(bookingData);
+
+            try {
+                const bookingResponse = await axios.post("http://127.0.0.1:8000/api/booking", bookingData);
+                console.log("booking data:", bookingResponse.data);
+                const booking_id = bookingResponse.data.Booking.id;
+                this.booking = bookingResponse.data.Booking;
+
+                console.log("Booking ID: " + booking_id);
+
+                const paymentData = {
+                    booking_id: booking_id,
+                    payment_amount: this.model.payment.payment_amount,
+                    payment_method: this.model.payment.payment_method,
+                    payment_date: this.current_date,
+                    payment_type: this.model.payment.payment_type,
+                    reference_number: this.model.payment.reference_number,
+                    number_of_day: this.model.payment.number_of_day,
+                    number_of_night: this.model.payment.number_of_night,
                 };
 
-                console.log(bookingData);
+                console.log(paymentData);
 
-                try {
-                    const bookingResponse = await axios.post("http://127.0.0.1:8000/api/booking", bookingData);
-                    console.log("booking data:", bookingResponse.data);
-                    const booking_id = bookingResponse.data.Booking.id;
-                    this.booking = bookingResponse.data.Booking;
+                const paymentResponse = await axios.post("http://127.0.0.1:8000/api/booking_payment", paymentData);
+                console.log("Booking Payment data:", paymentResponse.data);
+                const payment_id = paymentResponse.data.BookingPayment.id;
+                this.payment = paymentResponse.data.BookingPayment;
 
-                    console.log("Booking ID: " + booking_id);
+                console.log("Booking ID: " + booking_id);
+                console.log("Payment ID: " + payment_id);
 
-                    const paymentData = {
-                        booking_id: booking_id,
-                        payment_amount: this.model.payment.payment_amount,
-                        payment_method: this.model.payment.payment_method,
-                        payment_date: this.current_date,
-                        payment_type: this.model.payment.payment_type,
-                        reference_number: this.model.payment.reference_number,
-                        number_of_day: this.model.payment.number_of_day,
-                        number_of_night: this.model.payment.number_of_night,
-                    };
-
-                    console.log(paymentData);
-
-                    const paymentResponse = await axios.post("http://127.0.0.1:8000/api/booking_payment", paymentData);
-                    console.log("Booking Payment data:", paymentResponse.data);
-                    const payment_id = paymentResponse.data.BookingPayment.id;
-                    this.payment = paymentResponse.data.BookingPayment;
-
-                    console.log("Booking ID: " + booking_id);
-                    console.log("Payment ID: " + payment_id);
-
-                    this.paymentReceiptDialog = true;
-                } catch (error) {
-                    console.error("Error during form submission:", error);
-                }
-
+                this.paymentReceiptDialog = true;
+            } catch (error) {
+                console.error("Error during form submission:", error);
             }
-        },
-        validateDate(field) {
-            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-            if (!datePattern.test(this.model.booking[field])) {
-                this.errors[field] = "Date must be in YYYY-MM-DD format";
-            } else {
-                this.errors[field] = "";
-            }
-        },
-        validateForm() {
-            this.validateDate('check_in_date');
-            this.validateDate('check_out_date');
-            return !this.errors.check_in_date && !this.errors.check_out_date;
+
         },
         clearForm() {
-            this.booking.checkInDate = "";
-            this.booking.checkOutDate = "";
+            this.booking.checkInDate = null;
+            this.booking.checkOutDate = null;
         },
         fetchEstablishment() {
             axios
