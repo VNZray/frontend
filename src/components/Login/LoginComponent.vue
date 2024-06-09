@@ -22,7 +22,7 @@
                   <select v-model="account_type" :class="{ 'error-border': accountTypeError }" name="account_type" id="account_type">
                     <option value="" disabled selected>Select account type</option>
                     <option value="Admin">Admin</option>
-                    <option value="Owner">Owner</option>
+                    <option value="Member">Member</option>
                     <option value="Guest">Guest</option>
                   </select>
                   <p v-if="accountTypeError" class="error-message">{{ accountTypeError }}</p>
@@ -86,10 +86,10 @@ export default {
 
           if (response.data.status === 200) {
             if (this.account_type === 'Admin' && account.account_type === 'Admin') {
-              this.$router.push("/admin/dashboard");
+              this.$router.push(`/admin/dashboard/${account.owner_id}`);
             } else if (this.account_type === 'Guest' && account.account_type === 'Guest') {
               this.$router.push(`/booking/establishment/account/${account.guest_id}`);
-            } else if (this.account_type === 'Owner' && account.account_type === 'Member') {
+            } else if (this.account_type === 'Member' && account.account_type === 'Member') {
               this.$router.push(`/owner/dashboard/${account.owner_id}`);
             } else {
               this.emailError = "Login failed. Account type mismatch.";

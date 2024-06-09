@@ -1,8 +1,8 @@
 <template>
   <v-navigation-drawer expand-on-hover rail style="background-color: #1e4e72; color: white">
     <v-list>
-      <v-list-item :prepend-avatar="avatarUrl" :title="`${account.first_name} ${account.last_name}`"
-        :subtitle="`${account.account_type}`"></v-list-item>
+      <v-list-item :prepend-avatar="avatarUrl" :title="`${account.name}`"
+      subtitle="Member Account"></v-list-item>
     </v-list>
 
     <v-divider></v-divider>
@@ -43,11 +43,11 @@
 
           <v-row>
             <v-col>
-              <v-btn style="width: 100%;" >Cancel</v-btn>
+              <v-btn style="width: 100%;">Cancel</v-btn>
             </v-col>
 
             <v-col>
-              <v-btn @click="confirmLogout" style="width: 100%;" color="primary" >Logout</v-btn>
+              <v-btn @click="confirmLogout" style="width: 100%;" color="primary">Logout</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -98,10 +98,6 @@ export default {
             console.log("Establishments data:", response.data); // Log the response
             this.accommodations = response.data.Establishment;
             console.log(this.accommodations.id);
-            console.log(this.accommodations.id);
-            console.log(this.accommodations.id);
-            console.log(this.accommodations.id);
-            console.log(this.accommodations.id);
 
           })
           .catch((error) => {
@@ -119,9 +115,8 @@ export default {
             console.log("Account data:", response.data); // Log the response
             this.account = response.data.Account;
             console.log(this.account.id);
-            console.log(this.account.id);
-            console.log(this.account.first_name);
-            console.log(this.account.last_name);
+            console.log(this.account.name);
+
           })
           .catch((error) => {
             console.error("Error fetching account:", error);
@@ -133,15 +128,15 @@ export default {
             console.log("Accounts data:", response.data); // Log the response
             this.account = response.data.Account;
             console.log(this.account.id);
-            console.log(this.account.first_name);
-            console.log(this.account.last_name);
+            console.log(this.account.name);
+
           })
           .catch((error) => {
             console.error("Error fetching account:", error);
           });
       }
     },
-    openLogout(){
+    openLogout() {
       this.logoutDialog = true;
     },
     confirmLogout() {
