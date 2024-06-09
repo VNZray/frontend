@@ -17,6 +17,7 @@
                 <thead>
                     <tr>
                         <th class="text-left">Name</th>
+                        <th class="text-left">Contact Number</th>
                         <th class="text-left">Booking Date</th>
                         <th class="text-left">Check-in Date</th>
                         <th class="text-left">Check-out Date</th>
@@ -31,6 +32,7 @@
                 <tbody v-else>
                     <tr v-for="booking in filteredBookings" :key="booking.id">
                         <td>{{ findGuestName(booking.id) }}</td>
+                        <td>{{ findGuestContactNo(booking.id) }}</td>
                         <td>{{ formatDate(booking.booking_date) }}</td>
                         <td>{{ formatDate(booking.check_in_date) }}</td>
                         <td>{{ formatDate(booking.check_out_date) }}</td>
@@ -148,6 +150,10 @@ export default {
         findCheckOutDate(booking_id) {
             const guest = this.guest.find(g => g.booking_id === booking_id);
             return guest ? `${guest.check_out_date}` : 'Guest Check-out Date Not Found';
+        },
+        findGuestContactNo(booking_id){
+            const guest = this.guest.find(g => g.booking_id === booking_id);
+            return guest ? `${guest.guest_contact_no}` : 'Guest Name Not Found';
         },
         formatDate(date) {
             return format(new Date(date), 'MMMM d, yyyy');

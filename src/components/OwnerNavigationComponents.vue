@@ -1,8 +1,12 @@
 <template>
   <v-navigation-drawer expand-on-hover rail style="background-color: #1e4e72; color: white">
     <v-list>
+<<<<<<< Updated upstream
       <v-list-item :prepend-avatar="avatarUrl" :title="`${account.first_name} ${account.last_name}`"
         :subtitle="`${account.account_type}`"></v-list-item>
+=======
+      <v-list-item :prepend-avatar="avatarUrl" :title="`${account.name}`" subtitle="Member Account"></v-list-item>
+>>>>>>> Stashed changes
     </v-list>
 
     <v-divider></v-divider>
@@ -18,7 +22,7 @@
         :to="{ name: 'OwnerMenu', params: { owner_id: account.owner_id } }"></v-list-item>
       <v-list-item prepend-icon="mdi-receipt" title="Order"
         :to="{ name: 'OwnerOrder', params: { owner_id: account.owner_id } }"></v-list-item>
-      <v-list-item prepend-icon="mdi-home-city" title="My Establishment" :to="{
+      <v-list-item prepend-icon="mdi-home-city" title="My Establishments" :to="{
         name: 'OwnerEstablishmentProfile',
         params: { owner_id: account.owner_id },
       }"></v-list-item>

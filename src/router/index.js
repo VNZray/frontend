@@ -139,12 +139,6 @@ const router = createRouter({
       name: 'OwnerDashboard',
       component: () => import('@/pages/owner/Dashboard.vue')
     },
-
-    {
-      path: '/owner/establishment/:owner_id',
-      name: 'OwnerEstablishment',
-      component: () => import('@/pages/owner/Establishment.vue')
-    },
     {
       path: '/owner/establishment/profile/:owner_id',
       name: 'OwnerEstablishmentProfile',
@@ -178,7 +172,8 @@ const router = createRouter({
       component: () => import('@/pages/owner/Menu.vue')
     },
 
-    //Login and Register Router
+
+    //Login and Register Router   
     {
       path: '/login',
       name: 'Login',
