@@ -63,8 +63,9 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-text-field v-model="model.owner.owner_birthdate" label="Birthdate:" placeholder="YYYY-MM-DD"
-                      variant="outlined"></v-text-field>
+                    <v-date-input prepend-icon="" prepend-inner-icon="mdi-calendar"
+                      v-model="model.owner.owner_birthdate" label="Birthdate:" placeholder="MM/DD/YYYY"
+                      :allowed-date-formats="['MM/DD/YYYY']" variant="outlined"></v-date-input>
                   </v-col>
 
                   <v-col style="padding: 10px 15px">
@@ -510,9 +511,9 @@ export default {
           owner_first_name: null,
           owner_middle_name: null,
           owner_last_name: null,
-          owner_contact_number: null,
+          owner_contact_number: "+63",
           owner_email: null,
-          owner_age: 20,
+          owner_age: null,
           owner_province: null,
           owner_municipality: null,
           owner_barangay: null,
@@ -527,7 +528,7 @@ export default {
           establishment_total_room: null,
           establishment_address: null,
           establishment_email: null,
-          establishment_contact_number: null,
+          establishment_contact_number: "+63",
           establishment_type: null,
           establishment_description: null,
         },
@@ -728,25 +729,14 @@ export default {
       establishment_options: ["Hotel", "Homestay", "Resort", "Inn"],
     };
   },
-  computed: {
-    ownerAge() {
-      const birthdate = this.model.owner.owner_birthdate;
-      if (!birthdate) return null;
-
-      const today = new Date();
-      const birthDate = new Date(birthdate);
-      const age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      if (
-        monthDiff < 0 ||
-        (monthDiff === 0 && today.getDate() < birthDate.getDate())
-      ) {
-        age--;
-      }
-      return age;
+  methods: { 
+    formatDateToYYYYMMDD(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     },
-  },
-  methods: {
     async submitForm() {
 
       const ownerData = {
@@ -755,18 +745,33 @@ export default {
         owner_last_name: this.model.owner.owner_last_name,
         owner_contact_number: this.model.owner.owner_contact_number,
         owner_email: this.model.owner.owner_email,
-        owner_age: this.model.owner.owner_age,
+        owner_age: null,
         owner_province: this.model.owner.owner_province,
         owner_municipality: this.model.owner.owner_municipality,
         owner_barangay: this.model.owner.owner_barangay,
         owner_civil_status: this.model.owner.owner_civil_status,
         owner_gender: this.model.owner.owner_gender,
-        owner_birthdate: this.model.owner.owner_birthdate,
+        owner_birthdate: this.formatDateToYYYYMMDD(this.model.owner.owner_birthdate), // Format date
       };
 
       console.log(ownerData);
 
       try {
+
+        const birthdate = this.model.owner.owner_birthdate;
+        if (birthdate) {
+          const today = new Date();
+          const birthDate = new Date(birthdate);
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          const dayDiff = today.getDate() - birthDate.getDate();
+
+          if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+          }
+          ownerData.owner_age = age;
+        }
+
         // INSERT OWNER DATA
         const ownerResponse = await axios.post(
           "http://127.0.0.1:8000/api/owner",
