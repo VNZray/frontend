@@ -52,6 +52,11 @@ const router = createRouter({
       name: 'GuestProfile',
       component: () => import('@/pages/guest/GuestProfile.vue')
     },
+    {
+      path: '/booking/my-booking/:account_id',
+      name: 'guestBooking',
+      component: () => import('@/pages/guest/booking.vue')
+    },
 
 
     /*=======================================================================
@@ -89,44 +94,44 @@ const router = createRouter({
     },
     {
       path: '/admin/create-account',
-      name: 'AdminCreateAccount',
+      name: 'CreateAccount',
       component: () => import('@/pages/admin/CreateAccount.vue')
     },
 
     // ----------------------------------------------------------------------
 
     {
-      path: '/admin/dashboard/:account_id',
+      path: '/admin/dashboard/:owner_id',
       name: 'AdminDashboard',
       component: () => import('@/pages/admin/Dashboard.vue')
     },
     {
-      path: '/admin/establishment/:account_id',
+      path: '/admin/establishment/:owner_id',
       name: 'AdminEstablishment',
       component: () => import('@/pages/admin/Establsihments.vue')
     },
     {
-      path: '/admin/applicants/:account_id',
+      path: '/admin/applicants/:owner_id',
       name: 'AdminApplicants',
       component: () => import('@/pages/admin/Applicants.vue')
     },
     {
-      path: '/admin/apply-membership/:account_id',
+      path: '/admin/apply-membership/:owner_id',
       name: 'AddminApply',
       component: () => import('@/pages/admin/Apply.vue')
     },
     {
-      path: '/admin/membership-payment/:account_id',
+      path: '/admin/membership-payment/:owner_id',
       name: 'AdminPayment',
       component: () => import('@/pages/admin/Payment.vue')
     },
     {
-      path: '/admin/member/list/:account_id',
+      path: '/admin/member/list/:owner_id',
       name: 'AdminMembers',
       component: () => import('@/pages/admin/Members.vue')
     },
     {
-      path: '/admin/create-account',
+      path: '/admin/create-account/:owner_id',
       name: 'AdminCreateAccount',
       component: () => import('@/pages/admin/CreateAccount.vue')
     },

@@ -39,13 +39,13 @@
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-text-field label="Contact Number:" variant="outlined" type="text"
+                                    <v-text-field prepend-inner-icon="mdi-phone" label="Contact Number:" variant="outlined" type="text"
                                         id="contact_number" name="contact_number" v-model="model.guest.contact_number"
                                         required></v-text-field>
                                 </v-col>
 
                                 <v-col style="padding: 10px 15px;">
-                                    <v-text-field label="Email Address:" variant="outlined" type="email" id="email"
+                                    <v-text-field prepend-inner-icon="mdi-email" label="Email Address:" variant="outlined" type="email" id="email"
                                         name="email" v-model="model.account.email" required></v-text-field>
                                 </v-col>
                             </v-row>
@@ -74,14 +74,14 @@
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-text-field label="Password:" variant="outlined" type="password" id="password"
+                                    <v-text-field prepend-inner-icon="mdi-lock" label="Password:" variant="outlined" type="password" id="password"
                                         name="password" v-model="model.account.password" required></v-text-field>
                                 </v-col>
                             </v-row>
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-text-field label="Confirm Password:" variant="outlined" type="password"
+                                    <v-text-field prepend-inner-icon="mdi-lock" label="Confirm Password:" variant="outlined" type="password"
                                         id="confirmPassword" name="confirmPassword" v-model="confirmPassword"
                                         required></v-text-field>
                                 </v-col>
@@ -119,7 +119,7 @@ export default {
                 },
 
                 guest: {
-                    contact_number: "",
+                    contact_number: "+63",
                     province: "",
                     municipality: "",
                     barangay: "",
