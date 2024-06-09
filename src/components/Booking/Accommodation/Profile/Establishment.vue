@@ -17,14 +17,10 @@
             Loading...
           </p>
 
-          <div class="check-in-btn" style="width: 100%">
-            <v-btn @click="openDialog" style="text-align: center">Check-in</v-btn>
-          </div>
-
           <v-dialog v-model="dialog" max-width="600" style="height: auto">
             <v-card>
               <v-card-actions>
-                <BookingForm @closeDialog="closeDialog" />
+                <BookingForm :selectedRoom="selectedRoom" @closeDialog="closeDialog" />
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -52,7 +48,7 @@
                   </v-col>
 
                   <v-col>
-                    <v-btn to="/login" style="width: 100%;" color="primary">Logout</v-btn>
+                    <v-btn to="/login" style="width: 100%;" color="primary">Sign In</v-btn>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -80,7 +76,28 @@
 
     <!-- Room -->
 
-    <section v-if="filteredRooms.length > 0">
+    <section v-if="filteredRooms.length > 0 && account.id">
+      <article v-for="(room, index) in filteredRooms" :key="index" @click="openDialog(room)">
+        <div :class="['room-image', 'image' + (index + 1)]">
+          <h4 class="room-type">{{ room.room_type }}</h4>
+        </div>
+
+        <div class="room-info">
+          <div class="details">
+            <h3 class="room-no">{{ "Room " + room.room_number }}</h3>
+            <div class="room-details">
+              <div v-for="(detail, index) in room.details" :key="index" :class="'rd-' + (index + 1)">
+                <component :is="getIconComponent(detail.alt)" />
+                <p>{{ detail.text }}</p>
+              </div>
+            </div>
+          </div>
+          <h4 class="room-price">{{ room.room_price + " PHP" }}</h4>
+        </div>
+      </article>
+    </section>
+
+    <section v-else-if="filteredRooms.length > 0 && !account.id">
       <article v-for="(room, index) in filteredRooms" :key="index" @click.prevent="openSignInDialog">
         <div :class="['room-image', 'image' + (index + 1)]">
           <h4 class="room-type">{{ room.room_type }}</h4>
@@ -109,7 +126,7 @@
       <h1>No room available</h1>
     </section>
 
-    
+
 
   </div>
 
@@ -136,7 +153,8 @@ export default {
       account: {},
       rooms: [],
       loading: true,
-      showSignInialog: false
+      showSignInialog: false,
+      selectedRoom: null,
     };
   },
   created() {
@@ -207,7 +225,7 @@ export default {
     },
     fetchRooms() {
       axios
-        .get(`http://127.0.0.1:8000/api/room`)
+        .get(`http://127.0.0.1:8000/api/room/available`)
         .then((response) => {
           const roomData = response.data.Room;
 
@@ -242,7 +260,8 @@ export default {
           this.loading = false;
         });
     },
-    openDialog() {
+    openDialog(room) {
+      this.selectedRoom = room;
       this.dialog = true;
     },
     closeDialog() {

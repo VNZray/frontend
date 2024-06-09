@@ -18,11 +18,15 @@
           </RouterLink>
         </li>
         <li>
-          <a href="#" @click.prevent="showLogoutDialog">Logout</a>
+          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">{{ account.name }}
+          </RouterLink>
         </li>
+
         <li>
-          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">{{ account.name }}</RouterLink>
-        </li>
+  <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">
+    <i class="fas fa-user"></i>
+  </RouterLink>
+</li>
       </ul>
     </v-navigation>
 
@@ -54,11 +58,11 @@
 
           <v-row>
             <v-col>
-              <v-btn @click="cancelLogout" style="width: 100%;" >Cancel</v-btn>
+              <v-btn @click="cancelLogout" style="width: 100%;">Cancel</v-btn>
             </v-col>
 
             <v-col>
-              <v-btn @click="confirmLogout" style="width: 100%;" color="primary" >Logout</v-btn>
+              <v-btn @click="confirmLogout" style="width: 100%;" color="primary">Logout</v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -144,7 +148,7 @@ export default {
       this.logoutDialog = false;
       this.$router.push({ name: "Login" });
     },
-    cancelLogout(){
+    cancelLogout() {
       this.logoutDialog = false;
     }
   },
