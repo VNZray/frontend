@@ -6,16 +6,26 @@
                 <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
                     v-model="selectedEstablishment" variant="outlined"></v-select>
             </v-col>
+            <v-col md="2" sm="6" cols="12">
+                <v-select label="Room Number" :items="rooms.map(room => room.room_number)" v-model="selectedRoom"
+                    variant="outlined"></v-select>
+            </v-col>
+            <v-col md="2" sm="6" cols="12">
+                <v-select label="Month" :items="months" v-model="searchMonth" variant="outlined"></v-select>
+            </v-col>
+            <v-col md="2" sm="6" cols="12">
+                <v-select label="Year" :items="years" v-model="searchYear" variant="outlined"></v-select>
+            </v-col>
             <v-col cols="6" md="3" sm="12">
                 <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
                     hide-details single-line></v-text-field>
             </v-col>
         </v-row>
-        
+
         <v-card elevation="4">
             <v-table>
                 <thead>
-                    <tr>
+                    <tr style="background-color: #1e4e72; color: white;">
                         <th class="text-left">Name</th>
                         <th class="text-left">Booking Date</th>
                         <th class="text-left">Check-in Date</th>
@@ -23,13 +33,14 @@
                         <th class="text-left">Status</th>
                     </tr>
                 </thead>
-                <tbody v-if="bookings.length === 0">
+                <tbody v-if="bookings.length === 0" style="height: 690px;">
                     <tr>
                         <td colspan="5" class="text-center">Loading...</td>
                     </tr>
                 </tbody>
-                <tbody v-else>
-                    <tr v-for="booking in filteredBookings" :key="booking.id">
+                <tbody v-else style="max-height: 690px; overflow: auto;">
+                    <tr :class="{ 'even-row': isEven(index) }" v-for="(booking, index) in filteredBookings"
+                        :key="booking.id">
                         <td>{{ findGuestName(booking.id) }}</td>
                         <td>{{ formatDate(booking.booking_date) }}</td>
                         <td>{{ formatDate(booking.check_in_date) }}</td>
@@ -50,7 +61,30 @@ import { format } from 'date-fns';
 
 export default {
     data() {
+        const currentYear = new Date().getFullYear();
+        const years = Array.from({ length: 11 }, (_, i) => (currentYear + i).toString()); // Generate current year + 10 years
+        const latestYear = years[years.length - 1];
+
         return {
+            months: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ],
+            years: years,
+            latestYear: latestYear,
+            searchYear: null,
+            search: '',
+            searchMonth: null,
             bookingDetailsDialog: false,
             owner: {},
             establishment: null,
@@ -61,6 +95,9 @@ export default {
             selectedStatus: 'Booked',  // Set default status to "Booked"
             dialog: false,
             selectedDetails: null,
+            rooms: [],
+            selectedRoom: null,
+
         };
     },
     created() {
@@ -69,6 +106,19 @@ export default {
         this.fetchGuestBooking();
     },
     methods: {
+        fetchRooms(establishment_id) {
+            axios
+                .get(`http://127.0.0.1:8000/api/rooms/${establishment_id}`)
+                .then((response) => {
+                    const roomData = response.data.Room;
+                    this.rooms = roomData;
+                    console.log(roomData);
+                })
+                .catch((error) => {
+                    console.error("Error fetching rooms:", error);
+                    this.loading = false;
+                });
+        },
         viewRecords() {
             const owner_id = this.$route.params.owner_id;
             this.$router.push(`/owner/booking_records/${owner_id}`);
@@ -80,6 +130,9 @@ export default {
         },
         closeBookingDialog() {
             this.dialog = false;
+        },
+        isEven(index) {
+            return index % 2 === 0;
         },
         async fetchOwner() {
             const owner_id = this.$route.params.owner_id;
@@ -104,6 +157,8 @@ export default {
                 if (this.establishments.length > 0) {
                     this.selectedEstablishment = this.establishments[0].establishment_name;
                     this.fetchBookings();
+                    this.fetchRooms(this.establishments[0].id);
+
                 }
             } catch (error) {
                 console.error("Error fetching establishments:", error);
@@ -177,11 +232,47 @@ export default {
     },
     computed: {
         filteredBookings() {
-            if (!this.selectedStatus) {
-                return this.bookings;
+            let filtered = this.bookings;
+
+            if (this.selectedStatus) {
+                filtered = filtered.filter(booking => booking.booking_status === 'Checked-out');
             }
-            return this.bookings.filter(booking => booking.booking_status === 'Checked-out');
+
+            if (this.selectedRoom) {
+                filtered = filtered.filter(booking => booking.room_number === this.selectedRoom);
+            }
+
+            if (this.search) {
+                const searchQuery = this.search.toLowerCase();
+                filtered = filtered.filter(booking => {
+                    return (
+                        (this.findGuestName(booking.id).toLowerCase().includes(searchQuery)) ||
+                        (booking.booking_date && this.formatDate(booking.booking_date).toLowerCase().includes(searchQuery)) ||
+                        (booking.check_in_date && this.formatDate(booking.check_in_date).toLowerCase().includes(searchQuery)) ||
+                        (booking.check_out_date && this.formatDate(booking.check_out_date).toLowerCase().includes(searchQuery))
+                    );
+                });
+            }
+
+            if (this.searchMonth) {
+                const month = this.searchMonth.toLowerCase();
+                filtered = filtered.filter(booking => {
+                    return ((booking.booking_date && this.formatDate(booking.booking_date).toLowerCase().includes(month)));
+
+                });
+            }
+
+            if (this.searchYear) {
+                const month = this.searchYear.toLowerCase();
+                filtered = filtered.filter(booking => {
+                    return ((booking.booking_date && this.formatDate(booking.booking_date).toLowerCase().includes(month)));
+                });
+            }
+
+            return filtered;
         }
+
+
     },
     watch: {
         selectedEstablishment(newEstablishment) {
@@ -201,5 +292,8 @@ export default {
 
 
 <style scoped>
-/* Add any additional styles here */
+.even-row {
+    background-color: #f0f0f0;
+    /* Or any other color for even rows */
+}
 </style>
