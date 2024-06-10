@@ -50,6 +50,8 @@
                         </tbody>
                     </v-table>
                 </v-card>
+                <br>
+                <p>Created by: Rayven Clores</p>
             </v-col>
 
             <v-col cols="4">
