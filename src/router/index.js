@@ -18,12 +18,12 @@ const router = createRouter({
     {
       path: '/booking/establishment',
       name: 'Establsihments',
-      component: () => import('@/pages/guest/Establsihments.vue')
+      component: () => import('@/pages/guest/Establishments.vue')
     },
     {
       path: '/booking/establishment/account/:account_id',
       name: 'EstablsihmentsLoggedIn',
-      component: () => import('@/pages/guest/Establsihments.vue')
+      component: () => import('@/pages/guest/Establishments.vue')
     },
     {
       path: '/booking/establishment/profile/:establishment_id',
@@ -180,6 +180,11 @@ const router = createRouter({
     {
       path: '/owner/menu/:owner_id',
       name: 'OwnerMenu',
+      component: () => import('@/pages/owner/Menu.vue')
+    },
+    {
+      path: '/owner/room-sales/:owner_id',
+      name: 'OwnerRoomSales',
       component: () => import('@/pages/owner/Menu.vue')
     },
 

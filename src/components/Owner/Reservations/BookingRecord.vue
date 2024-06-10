@@ -13,10 +13,10 @@
             <v-col md="2" sm="6" cols="12">
                 <v-select label="Month" :items="months" v-model="searchMonth" variant="outlined"></v-select>
             </v-col>
-            <v-col md="2" sm="6" cols="12">
+            <v-col md="1" sm="6" cols="12">
                 <v-select label="Year" :items="years" v-model="searchYear" variant="outlined"></v-select>
             </v-col>
-            <v-col cols="6" md="3" sm="12">
+            <v-col cols="6" md="4" sm="12">
                 <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
                     hide-details single-line></v-text-field>
             </v-col>
@@ -171,6 +171,7 @@ export default {
                     const response = await axios.get(`http://127.0.0.1:8000/api/bookings/${establishment.id}`);
                     console.log("Bookings data:", response.data);
                     this.bookings = response.data.Booking;
+
                     this.establishment = establishment;
                 } catch (error) {
                     console.error("Error fetching bookings:", error);

@@ -32,7 +32,7 @@
             {{ establishment.establishment_description }}
           </p>
 
-          <v-dialog v-model="showSignInialog" max-width="400">
+          <v-dialog v-model="showSignInDialog" max-width="400">
             <v-card style="padding: 10px;">
               <v-card-text>
                 <v-row>
@@ -125,11 +125,7 @@
     <section v-else>
       <h1>No room available</h1>
     </section>
-
-
-
   </div>
-
 </template>
 
 <script>
@@ -153,7 +149,7 @@ export default {
       account: {},
       rooms: [],
       loading: true,
-      showSignInialog: false,
+      showSignInDialog: false,
       selectedRoom: null,
     };
   },
@@ -180,10 +176,10 @@ export default {
   },
   methods: {
     openSignInDialog() {
-      this.showSignInialog = true;
+      this.showSignInDialog = true;
     },
     closeSignInDialog() {
-      this.showSignInialog = false;
+      this.showSignInDialog = false;
     },
     fetchEstablishment() {
       const establishment_id = this.$route.params.establishment_id;
@@ -244,6 +240,7 @@ export default {
             ];
 
             const room = {
+              id: roomItem.id,
               establishment_id: roomItem.establishment_id,
               room_type: roomItem.room_type,
               room_number: roomItem.room_number,
@@ -278,12 +275,11 @@ export default {
         default:
           return null;
       }
-    }, closeDialog() {
-      this.dialog = false;
     },
   },
 };
 </script>
+
 
 <style scoped>
 .accommodation-wrapper {
@@ -298,7 +294,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
 }
 
 .cover {
@@ -356,6 +352,7 @@ h1 {
 .description {
   padding: 0px 40px 40px 40px;
   text-align: center;
+  width: 100%;
 }
 
 .check-in-btn {

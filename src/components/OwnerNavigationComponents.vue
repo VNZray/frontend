@@ -43,7 +43,7 @@
 
           <v-row>
             <v-col>
-              <v-btn style="width: 100%;">Cancel</v-btn>
+              <v-btn style="width: 100%;" @click="closeLogout" >Cancel</v-btn>
             </v-col>
 
             <v-col>
@@ -138,6 +138,9 @@ export default {
     },
     openLogout() {
       this.logoutDialog = true;
+    },
+    closeLogout(){
+      this.logoutDialog = false;
     },
     confirmLogout() {
       this.logoutDialog = false;

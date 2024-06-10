@@ -4,17 +4,17 @@
 
     <v-container>
         <v-row>
-            <v-col md="3" sm="6" cols="12">
+            <v-col md="3" sm="4" cols="12">
                 <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
                     v-model="selectedEstablishment" variant="outlined"></v-select>
             </v-col>
 
-            <v-col md="3" sm="6" cols="12">
-                <v-select label="Select Status" :items="['Pending', 'Booked', 'Checked-in']"
+            <v-col md="2" sm="4" cols="12">
+                <v-select label="Select Status" :items="['Pending', 'Booked', 'Checked-in', 'Canceled']"
                     v-model="selectedStatus" variant="outlined"></v-select>
             </v-col>
 
-            <v-col md="3" sm="6" cols="12">
+            <v-col md="3" sm="4" cols="12">
                 <v-btn style="height: 56px;" color="#1E4E72" @click="viewRecords">
                     View Booking Records
                 </v-btn>
@@ -98,7 +98,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Name: </h4>
                     </v-col>
 
@@ -108,7 +108,36 @@
                 </v-row>
 
                 <v-row>
+                    <v-col cols="5">
+                        <h4>Contact Number: </h4>
+                    </v-col>
+
                     <v-col>
+                        <h4> {{ findGuestContact(selectedDetails.id) }} </h4>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="5">
+                        <h4>Email: </h4>
+                    </v-col>
+
+                    <v-col>
+                        <h4> {{ findGuestEmail(selectedDetails.id) }} </h4>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="5">
+                        <h4>Address: </h4>
+                    </v-col>
+                    <v-col>
+                        <h4> {{ findGuestAddress(selectedDetails.id) }}</h4>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="5">
                         <h4>Booking Date: </h4>
                     </v-col>
                     <v-col>
@@ -117,7 +146,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Check-in Date: </h4>
                     </v-col>
                     <v-col>
@@ -126,7 +155,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Check-out Date: </h4>
                     </v-col>
                     <v-col>
@@ -135,7 +164,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Day/s: </h4>
                     </v-col>
                     <v-col>
@@ -144,7 +173,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Booking Status: </h4>
                     </v-col>
                     <v-col>
@@ -153,7 +182,7 @@
                 </v-row>
 
                 <v-row>
-                    <v-col>
+                    <v-col cols="5">
                         <h4>Note: </h4>
                     </v-col>
                     <v-col>
@@ -185,7 +214,6 @@
 </template>
 
 <script>
-import Booking from '@/pages/guest/booking.vue';
 import axios from 'axios';
 import { format } from 'date-fns';
 
@@ -278,6 +306,18 @@ export default {
             } catch (error) {
                 console.error("Error fetching bookings:", error);
             }
+        },
+        findGuestContact(guestId) {
+            const guest = this.guest.find(g => g.id === guestId);
+            return guest ? `${guest.guest_contact_no}` : 'Guest Contact Number Not Found';
+        },
+        findGuestEmail(guestId) {
+            const guest = this.guest.find(g => g.id === guestId);
+            return guest ? `${guest.guest_email}` : 'Guest Email Not Found';
+        },
+        findGuestAddress(guestId) {
+            const guest = this.guest.find(g => g.id === guestId);
+            return guest ? `${guest.guest_barangay}, ${guest.guest_municipality}, ${guest.guest_province}` : 'Guest Address Not Found';
         },
         findGuestName(guestId) {
             const guest = this.guest.find(g => g.id === guestId);

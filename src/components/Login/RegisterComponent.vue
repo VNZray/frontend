@@ -52,23 +52,23 @@
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-combobox label="Province" :items="province_options" variant="outlined"
+                                    <v-select label="Province" :items="province_options" variant="outlined"
                                         type="text" id="province" name="province" v-model="model.guest.province"
-                                        required></v-combobox>
+                                        required></v-select>
                                 </v-col>
                             </v-row>
 
                             <v-row>
                                 <v-col style="padding: 10px 15px;">
-                                    <v-combobox label="Municipality" :items="municipality_options" variant="outlined"
+                                    <v-select label="Municipality" :items="municipality_options" variant="outlined"
                                         type="text" id="municipality" name="municipality"
-                                        v-model="model.guest.municipality" required></v-combobox>
+                                        v-model="model.guest.municipality" required></v-select>
                                 </v-col>
 
                                 <v-col style="padding: 10px 15px;">
-                                    <v-combobox label="Barangay" :items="barangay_options" variant="outlined"
+                                    <v-select label="Barangay" :items="barangay_options" variant="outlined"
                                         type="text" id="barangay" name="barangay" v-model="model.guest.barangay"
-                                        required></v-combobox>
+                                        required></v-select>
                                 </v-col>
                             </v-row>
 
@@ -212,7 +212,7 @@ export default {
                 "Zamboanga del Norte",
                 "Zamboanga del Sur",
                 "Zamboanga Sibugay",
-            ],
+            ].sort(),
             municipality_options: [
                 "Cabusao",
                 "Del Gallego",
@@ -250,7 +250,7 @@ export default {
                 "Bula",
                 "Nabua",
                 "Naga City",
-            ],
+            ].sort(),
             barangay_options: [
                 "Agaas",
                 "Antolon",
@@ -301,7 +301,7 @@ export default {
                 "Tawog",
                 "Toboan",
                 "Terogo",
-            ],
+            ].sort(),
         };
     },
     methods: {

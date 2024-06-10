@@ -636,7 +636,7 @@ export default {
         "Zamboanga del Norte",
         "Zamboanga del Sur",
         "Zamboanga Sibugay",
-      ],
+      ].sort(),
       municipality_options: [
         "Cabusao",
         "Del Gallego",
@@ -674,7 +674,7 @@ export default {
         "Bula",
         "Nabua",
         "Naga City",
-      ],
+      ].sort(),
       barangay_options: [
         "Agaas",
         "Antolon",
@@ -725,11 +725,11 @@ export default {
         "Tawog",
         "Toboan",
         "Terogo",
-      ],
-      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"],
+      ].sort(),
+      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"].sort(),
     };
   },
-  methods: { 
+  methods: {
     formatDateToYYYYMMDD(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -786,19 +786,14 @@ export default {
         const establishmentData = {
           owner_id: owner_id,
           establishment_email: this.model.establishment.establishment_email,
-          establishment_capacity:
-            this.model.establishment.establishment_capacity,
-          establishment_total_room:
-            this.model.establishment.establishment_total_room,
-          establishment_contact_number:
-            this.model.establishment.establishment_contact_number,
+          establishment_capacity: this.model.establishment.establishment_capacity,
+          establishment_total_room: this.model.establishment.establishment_total_room,
+          establishment_contact_number: this.model.establishment.establishment_contact_number,
           establishment_type: this.model.establishment.establishment_type,
           establishment_address: this.model.establishment.establishment_address,
           show: "Private",
           establishment_name: this.model.establishment.establishment_name,
         };
-
-        console.log(establishmentData);
 
         // INSERT ESTABLISHMENT DATA
         const establishmentResponse = await axios.post(
