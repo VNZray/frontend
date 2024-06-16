@@ -72,7 +72,14 @@
       </v-col>
 
       <v-row>
-        <template v-if="filteredMenuItems.length > 0">
+        <!-- Loading state -->
+        <v-col v-if="loading" cols="12" class="text-center">
+          <h3>Loading...</h3>
+          <v-progress-linear color="#1E4E72" indeterminate></v-progress-linear>
+        </v-col>
+
+        <!-- Items loaded -->
+        <v-col v-else-if="filteredMenuItems.length > 0">
           <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
             <v-card class="item_card" style="height: 220px;">
               <v-row>
@@ -126,13 +133,14 @@
               </v-row>
             </v-card>
           </v-col>
-        </template>
-        <template v-else>
+        </v-col>
+
+        <!-- Delayed no items found message -->
+        <v-col v-else cols="12" class="text-center">
           <v-col cols="12" class="text-center">
-            <h3>Loading...</h3>
-            <v-progress-linear color="#1E4E72" indeterminate></v-progress-linear>
+            <h3>No items found.</h3>
           </v-col>
-        </template>
+        </v-col>
       </v-row>
     </v-row>
 
@@ -355,6 +363,7 @@ export default
         errorlist: [],
         menus: [],
         menuItems: [],
+        loading: true,
         ingredients: [],
         selectedIngredients: [],
         selectedTab: 0,
@@ -476,8 +485,17 @@ export default
           }));
 
           this.menuItems = menuItemsWithIngredients;
+
+          // Update filteredMenuItems based on selectedTab or other criteria
+          this.filteredMenuItems = this.menuItems.filter(item =>
+            item.menu_id === this.selectedTab &&
+            item.menuitem_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+          );
+
         } catch (error) {
           console.error('Error fetching menu items:', error);
+        } finally {
+          this.loading = false;
         }
       },
 
@@ -619,7 +637,7 @@ export default
           .then(response => {
             console.log(response.data);
             this.editMenuItemDialog = false;
-            this.fetchMenuItemsWithIngredients()();
+            this.fetchMenuItemsWithIngredients();
           })
           .catch(error => {
             console.error('Error updating menu item:', error);
@@ -636,7 +654,7 @@ export default
           .then(response => {
             console.log(response.data);
             this.deleteMenuItemDialog = false;
-            this.fetchMenuItemsWithIngredients()();
+            this.fetchMenuItemsWithIngredients();
           })
           .catch(error => {
             console.error('Error deleting menu item:', error);
