@@ -143,8 +143,6 @@ export default {
             filteredAccountType: null,
             filteredAccounts: [], // New property to hold filtered accounts
             searchQuery: '', // New property to hold search query
-
-
         };
     },
     computed: {
