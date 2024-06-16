@@ -151,8 +151,8 @@
             v-model="selectedEstablishmentName" variant="outlined"></v-select>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" @click="saveMenu">Save</v-btn>
           <v-btn color="primary" @click="createMenuDialog = false">Cancel</v-btn>
+          <v-btn color="primary" @click="saveMenu">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -173,8 +173,8 @@
             multiple outlined chips deletable-chips></v-autocomplete>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" @click="saveMenuItemAndIngredients">Save</v-btn>
           <v-btn color="primary" @click="createItemDialog = false">Cancel</v-btn>
+          <v-btn color="primary" @click="saveMenuItemAndIngredients">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
