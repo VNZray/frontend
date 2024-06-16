@@ -1,9 +1,8 @@
 <template>
   <v-navigation-drawer expand-on-hover rail style="background-color: #1e4e72; color: white">
     <v-list>
-      <v-list-item :prepend-avatar="avatarUrl" :title="`${account.name}`"
-      subtitle="Member Account"></v-list-item>
-    </v-list>
+      <v-list-item :prepend-avatar="avatarUrl" :title="`${account.name}`" subtitle="Member Account"></v-list-item>
+      </v-list>
 
     <v-divider></v-divider>
 
@@ -18,7 +17,7 @@
         :to="{ name: 'OwnerMenu', params: { owner_id: account.owner_id } }"></v-list-item>
       <v-list-item prepend-icon="mdi-receipt" title="Order"
         :to="{ name: 'OwnerOrder', params: { owner_id: account.owner_id } }"></v-list-item>
-      <v-list-item prepend-icon="mdi-home-city" title="My Establishment" :to="{
+      <v-list-item prepend-icon="mdi-home-city" title="My Establishments" :to="{
         name: 'OwnerEstablishmentProfile',
         params: { owner_id: account.owner_id },
       }"></v-list-item>
@@ -43,7 +42,7 @@
 
           <v-row>
             <v-col>
-              <v-btn style="width: 100%;">Cancel</v-btn>
+              <v-btn style="width: 100%;" @click="closeLogout" >Cancel</v-btn>
             </v-col>
 
             <v-col>
@@ -138,6 +137,9 @@ export default {
     },
     openLogout() {
       this.logoutDialog = true;
+    },
+    closeLogout(){
+      this.logoutDialog = false;
     },
     confirmLogout() {
       this.logoutDialog = false;

@@ -83,20 +83,20 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_province" label="Province:" :items="province_options"
-                      variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_province" label="Province:" :items="province_options"
+                      variant="outlined" type="text" required></v-select>
                   </v-col>
                 </v-row>
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_municipality" label="Municipality"
-                      :items="municipality_options" variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_municipality" label="Municipality"
+                      :items="municipality_options" variant="outlined" type="text" required></v-select>
                   </v-col>
 
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_barangay" label="Barangay" :items="barangay_options"
-                      variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_barangay" label="Barangay" :items="barangay_options"
+                      variant="outlined" type="text" required></v-select>
                   </v-col>
                 </v-row>
 
@@ -117,8 +117,8 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-text-field v-model="model.establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-text-field>
+                    <v-select :items="barangay_options" v-model="model.establishment.establishment_address" label="Establishment Address"
+                      variant="outlined" required></v-select>
                   </v-col>
                 </v-row>
 
@@ -185,14 +185,17 @@
                 </v-col>
 
                 <v-row v-for="(establishment, index) in additional_establishments" :key="index">
-                  <v-col style="margin-top: 20px" cols="12" md="12">
+                  <v-col style="margin-top: 40px" >
+                    <h3 class="text-center"> New Establishment </h3>
+                  </v-col>
+                  <v-col cols="12" md="12">
                     <v-text-field v-model="establishment.establishment_name"
                       :label="'Establishment Name ' + (index + 2)" variant="outlined" required></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-text-field>
+                    <v-select :items="barangay_options" v-model="establishment.establishment_address" label="Establishment Address"
+                      variant="outlined" required></v-select>
                   </v-col>
 
                   <v-col cols="12" md="6">
@@ -488,6 +491,7 @@
 </template>
 
 <script>
+import { provinceOptions, municipalityOptions, barangayOptions } from '../../options';
 import axios from "axios";
 import html2canvas from 'html2canvas';
 
@@ -553,183 +557,13 @@ export default {
       additional_establishments: [],
       owner_gender_options: ["M", "F"],
       owner_civil_status_options: ["Single", "Married", "Divorced", "Widowed"],
-      province_options: [
-        "Abra",
-        "Agusan del Norte",
-        "Agusan del Sur",
-        "Aklan",
-        "Albay",
-        "Antique",
-        "Apayao",
-        "Aurora",
-        "Basilan",
-        "Bataan",
-        "Batanes",
-        "Batangas",
-        "Benguet",
-        "Biliran",
-        "Bohol",
-        "Bukidnon",
-        "Bulacan",
-        "Cagayan",
-        "Camarines Norte",
-        "Camarines Sur",
-        "Camiguin",
-        "Capiz",
-        "Catanduanes",
-        "Cavite",
-        "Cebu",
-        "Cotabato",
-        "Davao de Oro (Compostela Valley)",
-        "Davao del Norte",
-        "Davao del Sur",
-        "Davao Occidental",
-        "Davao Oriental",
-        "Dinagat Islands",
-        "Eastern Samar",
-        "Guimaras",
-        "Ifugao",
-        "Ilocos Norte",
-        "Ilocos Sur",
-        "Iloilo",
-        "Isabela",
-        "Kalinga",
-        "La Union",
-        "Laguna",
-        "Lanao del Norte",
-        "Lanao del Sur",
-        "Leyte",
-        "Maguindanao del Norte",
-        "Maguindanao del Sur",
-        "Marinduque",
-        "Masbate",
-        "Misamis Occidental",
-        "Misamis Oriental",
-        "Mountain Province",
-        "Negros Occidental",
-        "Negros Oriental",
-        "Northern Samar",
-        "Nueva Ecija",
-        "Nueva Vizcaya",
-        "Occidental Mindoro",
-        "Oriental Mindoro",
-        "Palawan",
-        "Pampanga",
-        "Pangasinan",
-        "Quezon",
-        "Quirino",
-        "Rizal",
-        "Romblon",
-        "Samar",
-        "Sarangani",
-        "Siquijor",
-        "Sorsogon",
-        "South Cotabato",
-        "Southern Leyte",
-        "Sultan Kudarat",
-        "Sulu",
-        "Surigao del Norte",
-        "Surigao del Sur",
-        "Tarlac",
-        "Tawi-Tawi",
-        "Zambales",
-        "Zamboanga del Norte",
-        "Zamboanga del Sur",
-        "Zamboanga Sibugay",
-      ],
-      municipality_options: [
-        "Cabusao",
-        "Del Gallego",
-        "Lupi",
-        "Ragay",
-        "Sipocot",
-        "Gainza",
-        "Libmanan",
-        "Milaor",
-        "Minalabac",
-        "Pamplona",
-        "Pasacao",
-        "San Fernando",
-        "Bombon",
-        "Calabanga",
-        "Camaligan",
-        "Canaman",
-        "Magarao",
-        "Ocampo",
-        "Pili",
-        "Caramoan",
-        "Garchitorena",
-        "Goa",
-        "Lagonoy",
-        "Presentacion",
-        "Sagnay",
-        "San Jose",
-        "Siruma",
-        "Tigaon",
-        "Tinambac",
-        "Baao",
-        "Balatan",
-        "Bato",
-        "Buhi",
-        "Bula",
-        "Nabua",
-        "Naga City",
-      ],
-      barangay_options: [
-        "Agaas",
-        "Antolon",
-        "Bacgong",
-        "Bahay",
-        "Bikal",
-        "Binanuahan",
-        "Cabacongan",
-        "Cadong",
-        "Colongcogong",
-        "Canatuan",
-        "Caputatan",
-        "Gogon",
-        "Daraga",
-        "Gata",
-        "Gibgos",
-        "Guijalo",
-        "Hanopol",
-        "Hanoy",
-        "Haponan",
-        "Ilawod",
-        "Ili-Centro",
-        "Lidong",
-        "Lubas",
-        "Malabog",
-        "Maligaya",
-        "Mampirao",
-        "Mandiclum",
-        "Maqueda",
-        "Minalaba",
-        "Oring",
-        "Oroc-Osoc",
-        "Pagolinan",
-        "Pandanan",
-        "Paniman",
-        "Patag-Belen",
-        "Pili-Centro",
-        "Pili-Tabiguian",
-        "Poloan",
-        "Salvacion",
-        "San Roque",
-        "San Vicente",
-        "Santa Cruz",
-        "Solnopan",
-        "Tabgon",
-        "Tabiguian",
-        "Tabog",
-        "Tawog",
-        "Toboan",
-        "Terogo",
-      ],
-      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"],
+      province_options: provinceOptions,
+      municipality_options: municipalityOptions,
+      barangay_options: barangayOptions,
+      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"].sort(),
     };
   },
-  methods: { 
+  methods: {
     formatDateToYYYYMMDD(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -786,19 +620,14 @@ export default {
         const establishmentData = {
           owner_id: owner_id,
           establishment_email: this.model.establishment.establishment_email,
-          establishment_capacity:
-            this.model.establishment.establishment_capacity,
-          establishment_total_room:
-            this.model.establishment.establishment_total_room,
-          establishment_contact_number:
-            this.model.establishment.establishment_contact_number,
+          establishment_capacity: this.model.establishment.establishment_capacity,
+          establishment_total_room: this.model.establishment.establishment_total_room,
+          establishment_contact_number: this.model.establishment.establishment_contact_number,
           establishment_type: this.model.establishment.establishment_type,
           establishment_address: this.model.establishment.establishment_address,
           show: "Private",
           establishment_name: this.model.establishment.establishment_name,
         };
-
-        console.log(establishmentData);
 
         // INSERT ESTABLISHMENT DATA
         const establishmentResponse = await axios.post(

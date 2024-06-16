@@ -18,7 +18,7 @@
 
         <v-row>
             <v-col cols="8">
-                <v-card elevation="6">
+                <v-card elevation="6" style="max-height: 730px; overflow: auto;">
                     <v-table>
                         <thead style="background-color: #1E4E72; color: white;">
                             <tr>
@@ -50,6 +50,8 @@
                         </tbody>
                     </v-table>
                 </v-card>
+                <br>
+                <p>Created by: Rayven Clores</p>
             </v-col>
 
             <v-col cols="4">
