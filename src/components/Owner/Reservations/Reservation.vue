@@ -67,7 +67,8 @@
                                             </v-row>
 
                                             <v-row style="margin-top: 20px;">
-                                                <v-btn v-if="booking.booking_status === 'Pending'" @click="confirmBooking(booking)"
+                                                <v-btn v-if="booking.booking_status === 'Pending'"
+                                                    @click="confirmBooking(booking)"
                                                     style="background-color: #1E4E72; color: white; width: 95%;">
                                                     Confirm
                                                 </v-btn>
@@ -224,6 +225,7 @@ export default {
             owner: {},
             establishment: null,
             guest: [],
+            room: [],
             bookings: [],
             establishments: [],
             selectedEstablishment: null,
@@ -278,6 +280,7 @@ export default {
                 if (this.establishments.length > 0) {
                     this.selectedEstablishment = this.establishments[0].establishment_name;
                     this.fetchBookings();
+                    this.fetchRoom(this.establishments[0].id);
                 }
             } catch (error) {
                 console.error("Error fetching establishments:", error);
@@ -292,7 +295,7 @@ export default {
                     this.bookings = response.data.Booking;
                     this.establishment = establishment;
                 } catch (error) {
-                    console.error("Error fetching bookings:", error);
+                    console.error("Error fetching bookings: ", error);
                 }
             } else {
                 console.error("Selected establishment not found.");
@@ -304,7 +307,16 @@ export default {
                 console.log("Guest Booking data:", response.data);
                 this.guest = response.data.Booking;
             } catch (error) {
-                console.error("Error fetching bookings:", error);
+                console.error("Error fetching bookings: ", error);
+            }
+        },
+        async fetchRoom(establishment_id) {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/api/rooms/${establishment_id}`);
+                console.log("Room data:", response.data);
+                this.room = response.data.Room;
+            } catch (error) {
+                console.error("Error fetching Room Data: ", error);
             }
         },
         findGuestContact(guestId) {
@@ -335,6 +347,20 @@ export default {
             const guest = this.guest.find(g => g.booking_id === booking_id);
             return guest ? `${guest.check_out_date}` : 'Guest Check-out Date Not Found';
         },
+        findRoomId(booking_id) {
+            const booking = this.bookings.find(b => b.id === booking_id);
+            return booking ? booking.room_id : 'Room ID Not Found';
+        },
+        async updateRoomStatus(room_id, status) {
+            try {
+                const response = await axios.put(`http://127.0.0.1:8000/api/room/${room_id}/update`, {
+                    room_status: status
+                });
+                console.log("Room status updated:", response.data);
+            } catch (error) {
+                console.error("Error updating room status:", error);
+            }
+        },
         formatDate(date) {
             return format(new Date(date), 'MMMM d, yyyy');
         },
@@ -343,10 +369,10 @@ export default {
                 const response = await axios.put(`http://127.0.0.1:8000/api/booking/${booking.id}`, {
                     booking_status: 'Booked'
                 });
-                console.log("Booking status updated to Checked-in:", response.data);
+                console.log("Booking status updated to Booked:", response.data);
                 booking.booking_status = 'Booked';
             } catch (error) {
-                console.error("Error updating booking status to Checked-in:", error);
+                console.error("Error updating booking status to Booked:", error);
             }
         },
         async checkInBooking(booking) {
@@ -355,6 +381,12 @@ export default {
                     booking_status: 'Checked-in'
                 });
                 console.log("Booking status updated to Checked-in:", response.data);
+
+                const room_id = this.findRoomId(booking.id);
+                if (room_id) {
+                    await this.updateRoomStatus(room_id, 'Occupied');
+                }
+
                 booking.booking_status = 'Checked-in';
                 this.closeBookingDialog();
             } catch (error) {
@@ -367,12 +399,18 @@ export default {
                     booking_status: 'Checked-out'
                 });
                 console.log("Booking status updated to Checked-out:", response.data);
+
+                const room_id = this.findRoomId(booking.id);
+                if (room_id) {
+                    await this.updateRoomStatus(room_id, 'Available');
+                }
+
                 booking.booking_status = 'Checked-out';
                 this.closeBookingDialog();
             } catch (error) {
                 console.error("Error updating booking status to Checked-out:", error);
             }
-        },
+        }
     },
     computed: {
         filteredBookings() {
@@ -389,6 +427,10 @@ export default {
         selectedEstablishment(newEstablishment) {
             if (newEstablishment) {
                 this.fetchBookings();
+                const establishment = this.establishments.find(est => est.establishment_name === newEstablishment);
+                if (establishment) {
+                    this.fetchRoom(establishment.id);
+                }
             }
         },
         selectedStatus(newStatus) {
