@@ -13,10 +13,10 @@
             <v-col md="2" sm="6" cols="12">
                 <v-select label="Month" :items="months" v-model="searchMonth" variant="outlined"></v-select>
             </v-col>
-            <v-col md="2" sm="6" cols="12">
+            <v-col md="1" sm="6" cols="12">
                 <v-select label="Year" :items="years" v-model="searchYear" variant="outlined"></v-select>
             </v-col>
-            <v-col cols="6" md="3" sm="12">
+            <v-col cols="6" md="4" sm="12">
                 <v-text-field v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
                     hide-details single-line></v-text-field>
             </v-col>
@@ -27,6 +27,7 @@
                 <thead>
                     <tr style="background-color: #1e4e72; color: white;">
                         <th class="text-left">Name</th>
+                        <th class="text-left">Contact Number</th>
                         <th class="text-left">Booking Date</th>
                         <th class="text-left">Check-in Date</th>
                         <th class="text-left">Check-out Date</th>
@@ -42,6 +43,7 @@
                     <tr :class="{ 'even-row': isEven(index) }" v-for="(booking, index) in filteredBookings"
                         :key="booking.id">
                         <td>{{ findGuestName(booking.id) }}</td>
+                        <td>{{ findGuestContactNo(booking.id) }}</td>
                         <td>{{ formatDate(booking.booking_date) }}</td>
                         <td>{{ formatDate(booking.check_in_date) }}</td>
                         <td>{{ formatDate(booking.check_out_date) }}</td>
@@ -171,6 +173,7 @@ export default {
                     const response = await axios.get(`http://127.0.0.1:8000/api/bookings/${establishment.id}`);
                     console.log("Bookings data:", response.data);
                     this.bookings = response.data.Booking;
+
                     this.establishment = establishment;
                 } catch (error) {
                     console.error("Error fetching bookings:", error);
@@ -203,6 +206,10 @@ export default {
         findCheckOutDate(booking_id) {
             const guest = this.guest.find(g => g.booking_id === booking_id);
             return guest ? `${guest.check_out_date}` : 'Guest Check-out Date Not Found';
+        },
+        findGuestContactNo(booking_id){
+            const guest = this.guest.find(g => g.booking_id === booking_id);
+            return guest ? `${guest.guest_contact_no}` : 'Guest Name Not Found';
         },
         formatDate(date) {
             return format(new Date(date), 'MMMM d, yyyy');

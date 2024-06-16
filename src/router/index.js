@@ -18,12 +18,12 @@ const router = createRouter({
     {
       path: '/booking/establishment',
       name: 'Establsihments',
-      component: () => import('@/pages/guest/Establsihments.vue')
+      component: () => import('@/pages/guest/Establishments.vue')
     },
     {
       path: '/booking/establishment/account/:account_id',
       name: 'EstablsihmentsLoggedIn',
-      component: () => import('@/pages/guest/Establsihments.vue')
+      component: () => import('@/pages/guest/Establishments.vue')
     },
     {
       path: '/booking/establishment/profile/:establishment_id',
@@ -144,12 +144,6 @@ const router = createRouter({
       name: 'OwnerDashboard',
       component: () => import('@/pages/owner/Dashboard.vue')
     },
-
-    {
-      path: '/owner/establishment/:owner_id',
-      name: 'OwnerEstablishment',
-      component: () => import('@/pages/owner/Establishment.vue')
-    },
     {
       path: '/owner/establishment/profile/:owner_id',
       name: 'OwnerEstablishmentProfile',
@@ -182,8 +176,14 @@ const router = createRouter({
       name: 'OwnerMenu',
       component: () => import('@/pages/owner/Menu.vue')
     },
+    {
+      path: '/owner/room-sales/:owner_id',
+      name: 'OwnerRoomSales',
+      component: () => import('@/pages/owner/Menu.vue')
+    },
 
-    //Login and Register Router
+
+    //Login and Register Router   
     {
       path: '/login',
       name: 'Login',

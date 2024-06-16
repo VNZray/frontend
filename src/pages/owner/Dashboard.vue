@@ -1,8 +1,6 @@
 <template>
     <OwnerNavigationComponents />
-    <v-container style="padding: 10px 0;">
-        <h1 style="color: #1E4E72;">Dashboard</h1>
-    </v-container>
+    <RoomSalesComponent />
 </template>
 
 <style scoped>

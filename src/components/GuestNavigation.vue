@@ -10,7 +10,7 @@
         <v-list density="compact" nav>
             <v-list-item prepend-icon="mdi-home" title="Home" value="home"
             :to="{ name: 'HomepageLoggedIn', params: { account_id: account.guest_id } }"
-            ></v-list-item>            <v-list-item prepend-icon="mdi-book-open" title="Booking" value="shared"
+            ></v-list-item>            <v-list-item prepend-icon="mdi-book-open" title="Booking Transactions" value="shared"
             :to="{ name: 'guestBooking', params: { account_id: account.guest_id } }"
             ></v-list-item>
             <v-list-item prepend-icon="mdi-account" title="My Profile" value="MyProfile"
@@ -23,6 +23,7 @@
             </div>
         </template>
     </v-navigation-drawer>
+    
 </template>
 
 
