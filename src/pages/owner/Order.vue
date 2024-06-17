@@ -1,6 +1,6 @@
 <template>
     <OwnerNavigationComponents />
-    <v-container style="padding: 10px 0;">
+    <v-container>
         <h1 style="color: #1E4E72;">Food Ordering</h1>
     </v-container>
 </template>

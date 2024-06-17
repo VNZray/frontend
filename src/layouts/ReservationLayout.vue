@@ -20,11 +20,6 @@ h2 {
     color: #607683;
 }
 
-h1 {
-    margin: 0 10px 0 10px;
-    text-wrap: nowrap
-}
-
 .title-line-left,
 .title-line-right {
     border: 3px solid #607683;

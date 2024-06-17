@@ -7,7 +7,7 @@
                         <v-tab value="one">Pending Booking</v-tab>
                         <v-tab value="two">My Booking</v-tab>
                         <v-tab value="three">Booking History</v-tab>
-                        <v-tab value="four">Canceled Booking</v-tab>
+                        <v-tab value="four">Cancelled Booking</v-tab>
                     </v-tabs>
 
                     <v-card-text style="padding: 10px">
@@ -190,7 +190,7 @@
                                 </v-row>
                             </v-tabs-window-item>
 
-                            <!-- Canceled Booking Tab -->
+                            <!-- Cancelled Booking Tab -->
                             <v-tabs-window-item value="four">
                                 <v-row style="margin-bottom: 10px">
                                     <v-col style="padding-bottom: 0;">
@@ -213,8 +213,8 @@
                                     </v-col>
                                 </v-row>
 
-                                <v-row v-if="filteredBookings('Canceled').length > 0"
-                                    v-for="b in filteredBookings('Canceled')" :key="b.id">
+                                <v-row v-if="filteredBookings('Cancelled').length > 0"
+                                    v-for="b in filteredBookings('Cancelled')" :key="b.id">
                                     <v-col style="padding-top: 0">
                                         <v-card class="cards" elevation="0" style="padding: 12px;">
                                             <v-row>
@@ -310,7 +310,7 @@ export default {
         async cancelBooking(bookingId) {
             try {
                 await axios.put(`http://127.0.0.1:8000/api/booking/${bookingId}`, {
-                    booking_status: 'Canceled'
+                    booking_status: 'Cancelled'
                 });
                 // Update room status after cancellation
                 const booking = this.booking.find(b => b.id === bookingId);

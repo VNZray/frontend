@@ -1,9 +1,5 @@
 <template>
   <v-container>
-    <h1>Applicants</h1>
-  </v-container>
-
-  <v-container>
         <!--Code here-->
         <h1>Applicants Table</h1>
     </v-container>

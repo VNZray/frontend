@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="d-flex justify-center align-center" style="padding: 0 25px 20px 25px;">
+  <v-container>
 
     <v-row align="center" justify="left">
       <!-- Search field and tabs -->
-      <v-col style="padding: 0;" cols="12">
+      <v-col cols="12">
         <v-row>
           <v-col cols="12" md="3">
             <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
@@ -17,7 +17,7 @@
 
           <!--Menu tabs-->
           <v-col cols="12" md="5" class="d-flex align-center">
-            <v-tabs style="height: 100%" v-model="selectedTab">
+            <v-tabs v-model="selectedTab">
               <v-tab v-for="menu in menus" :key="menu.id" :value="menu.id" @click="selectMenu(menu)">
                 {{ menu.menu_name }}
               </v-tab>
@@ -32,31 +32,28 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="createMenuDialog = true">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createMenuDialog = true">
                       Add New Menu
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="createItemDialog = true">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createItemDialog = true">
                       Add New Menu Item
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="openIngredientsDialog()">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="openIngredientsDialog()">
                       Ingredients Management
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" v-if="selectedTab" variant=outlined class="add-btn" color="red"
+                    <v-btn v-if="selectedTab" variant=outlined class="add-btn" color="red"
                       @click="confirmDeleteMenu(selectedTab)">
                       Delete Current Menu
                     </v-btn>
@@ -78,17 +75,16 @@
         <template v-if="filteredMenuItems.length > 0">
           <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
             <!-- Begin v-card component integration -->
-            <v-card elevation="6" max-width="430" max-height="540" min-height="540">
+            <v-card class="mx-auto my-12" elevation="6" max-width="430">
               <v-img height="250" :src="menuItem.menuitem_image" cover></v-img>
 
               <v-card-item>
-                <v-card-title class="text-left">{{ menuItem.menuitem_name }} <p style="color: red;">{{
-                  menuItem.menuitem_price }} Pesos</p> </v-card-title>
+                <v-card-title class="text-left">{{ menuItem.menuitem_name }}</v-card-title>
               </v-card-item>
 
               <v-card-text style="padding-bottom: 0">
-                <p style="min-height: 60px;" class="text-left">
-                  {{ menuItem.menuitem_description }}
+                <p class="text-left">
+                  {{  menuItem.menuitem_description  }}
                 </p>
               </v-card-text>
 
@@ -96,27 +92,24 @@
 
               <div class="px-4 mb-2">
                 <v-chip-group>
-                  <v-chip color="primary" v-for="ingredient in menuItem.ingredients" :key="ingredient.id">
+                  <v-chip v-for="ingredient in menuItem.ingredients" :key="ingredient.id">
                     {{ ingredient.ingredient_name }}
                   </v-chip>
                 </v-chip-group>
               </div>
 
-              <div style="display: flex; align-items: last baseline; justify-content: center;">
-                <v-card-actions style="width: 430px;">
-                  <v-row>
-                    <v-col>
-                      <v-btn prepend-icon="mdi-delete" width="100%" color="red"
-                        @click="confirmDeleteMenuItem(menuItem)">
-                        Remove</v-btn>
-                    </v-col>
-                    <v-col>
-                      <v-btn prepend-icon="mdi-pencil" width="100%" color="primary" @click="editMenuItem(menuItem)">
-                        Edit</v-btn>
-                    </v-col>
-                  </v-row>
-                </v-card-actions>
-              </div>
+              <v-card-actions>
+                <v-row>
+                  <v-col>
+                    <v-btn prepend-icon="mdi-delete" width="100%" color="red" @click="confirmDeleteMenuItem(menuItem)">
+                      Remove</v-btn>
+                  </v-col>
+                  <v-col>
+                    <v-btn prepend-icon="mdi-pencil" width="100%" color="primary" @click="editMenuItem(menuItem)">
+                      Edit</v-btn>
+                  </v-col>
+                </v-row>
+              </v-card-actions>
             </v-card>
             <!-- End v-card component integration -->
           </v-col>
@@ -160,7 +153,7 @@
           <ul v-if="Object.keys(errorlist).length > 0">
             <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
           </ul>
-          <v-file-input variant="outlined" v-model="filename" label="Upload Image"></v-file-input>
+          <v-file-input prepend-icon="" prepend-inner-icon="mdi-image" variant="outlined" v-model="filename" label="Upload Image"></v-file-input>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_name" label="Menu Item Name"></v-text-field>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_description"
             label="Description"></v-text-field>

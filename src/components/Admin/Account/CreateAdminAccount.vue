@@ -70,8 +70,8 @@
 
                         <v-row>
                             <v-col>
-                                <v-combobox prepend-inner-icon="mdi-account" v-model="model.account.name" label="Name:"
-                                    variant="outlined" :items="ownerNames"></v-combobox>
+                                <v-select prepend-inner-icon="mdi-account" v-model="model.account.name" label="Name:"
+                                    variant="outlined" :items="ownerNames"></v-select>
                             </v-col>
                         </v-row>
 

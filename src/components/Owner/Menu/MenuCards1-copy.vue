@@ -3,7 +3,7 @@
 
     <v-row align="center" justify="left">
       <!-- Search field and tabs -->
-      <v-col style="padding: 0;" cols="12">
+      <v-col cols="12">
         <v-row>
           <v-col cols="12" md="3">
             <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
@@ -17,7 +17,7 @@
 
           <!--Menu tabs-->
           <v-col cols="12" md="5" class="d-flex align-center">
-            <v-tabs style="height: 100%" v-model="selectedTab">
+            <v-tabs v-model="selectedTab">
               <v-tab v-for="menu in menus" :key="menu.id" :value="menu.id" @click="selectMenu(menu)">
                 {{ menu.menu_name }}
               </v-tab>
@@ -32,31 +32,28 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="createMenuDialog = true">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createMenuDialog = true">
                       Add New Menu
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="createItemDialog = true">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createItemDialog = true">
                       Add New Menu Item
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" variant=outlined class="add-btn" color="primary"
-                      @click="openIngredientsDialog()">
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="openIngredientsDialog()">
                       Ingredients Management
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn style="width: 280px;" v-if="selectedTab" variant=outlined class="add-btn" color="red"
+                    <v-btn v-if="selectedTab" variant=outlined class="add-btn" color="red"
                       @click="confirmDeleteMenu(selectedTab)">
                       Delete Current Menu
                     </v-btn>
@@ -77,48 +74,57 @@
       <v-row>
         <template v-if="filteredMenuItems.length > 0">
           <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
-            <!-- Begin v-card component integration -->
-            <v-card elevation="6" max-width="430" max-height="540" min-height="540">
-              <v-img height="250" :src="menuItem.menuitem_image" cover></v-img>
-
-              <v-card-item>
-                <v-card-title class="text-left">{{ menuItem.menuitem_name }} <p style="color: red;">{{
-                  menuItem.menuitem_price }} Pesos</p> </v-card-title>
-              </v-card-item>
-
-              <v-card-text style="padding-bottom: 0">
-                <p style="min-height: 60px;" class="text-left">
-                  {{ menuItem.menuitem_description }}
-                </p>
-              </v-card-text>
-
-              <v-card-title class="text-left">Ingredients</v-card-title>
-
-              <div class="px-4 mb-2">
-                <v-chip-group>
-                  <v-chip color="primary" v-for="ingredient in menuItem.ingredients" :key="ingredient.id">
-                    {{ ingredient.ingredient_name }}
-                  </v-chip>
-                </v-chip-group>
-              </div>
-
-              <div style="display: flex; align-items: last baseline; justify-content: center;">
-                <v-card-actions style="width: 430px;">
+            <v-card class="item_card" style="height: 220px;">
+              <v-row>
+                <v-col cols="12" md="5" style="height: 100%;">
+                  <div class="name_container">
+                    <h1>{{ menuItem.menuitem_name }}</h1>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="7" style="height: 100%;">
                   <v-row>
-                    <v-col>
-                      <v-btn prepend-icon="mdi-delete" width="100%" color="red"
-                        @click="confirmDeleteMenuItem(menuItem)">
-                        Remove</v-btn>
-                    </v-col>
-                    <v-col>
-                      <v-btn prepend-icon="mdi-pencil" width="100%" color="primary" @click="editMenuItem(menuItem)">
-                        Edit</v-btn>
-                    </v-col>
+                    <div class="item_container">
+                      <v-container>
+                        <v-col>
+                          <v-row>
+                            <h2 style="text-align: left;">Description:</h2>
+                            <h4 style="text-align: left;">
+                              {{ menuItem.menuitem_description }}
+                            </h4>
+                          </v-row>
+                          <v-row>
+                            <h2 style="text-align: left;">Ingredients:</h2>
+                            <v-chip-group column>
+                              <v-chip density="compact" size="small" v-for="ingredient in menuItem.ingredients"
+                                :key="ingredient.id" class="ma-1">
+                                {{ ingredient.ingredient_name }}
+                              </v-chip>
+                            </v-chip-group>
+                          </v-row>
+                          <v-row>
+                            <h2 style="text-align: left;">Price: {{ menuItem.menuitem_price }}</h2>
+                          </v-row>
+                        </v-col>
+                      </v-container>
+                    </div>
+                    <div class="action_container">
+                      <v-col>
+                        <v-row>
+                          <v-col cols="12" md="6">
+                            <v-btn variant="tonal" class="add-actions" prepend-icon="mdi-circle-edit-outline"
+                              color="blue" @click="editMenuItem(menuItem)">EDIT</v-btn>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <v-btn variant="tonal" class="add-actions" prepend-icon="mdi-close-circle-outline"
+                              color="red" @click="confirmDeleteMenuItem(menuItem)">DELETE</v-btn>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </div>
                   </v-row>
-                </v-card-actions>
-              </div>
+                </v-col>
+              </v-row>
             </v-card>
-            <!-- End v-card component integration -->
           </v-col>
         </template>
         <template v-else>
@@ -128,7 +134,6 @@
           </v-col>
         </template>
       </v-row>
-
     </v-row>
 
     <!-- <reports ref="salesReports" /> -->
@@ -160,7 +165,6 @@
           <ul v-if="Object.keys(errorlist).length > 0">
             <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
           </ul>
-          <v-file-input variant="outlined" v-model="filename" label="Upload Image"></v-file-input>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_name" label="Menu Item Name"></v-text-field>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_description"
             label="Description"></v-text-field>
@@ -343,8 +347,6 @@ export default
     },
     data() {
       return {
-        filename: null,
-        selectedFile: null,
         owner: {},
         establishment: null,
         establishments: [],
@@ -385,7 +387,6 @@ export default
             establishment_id: '',
           },
           MenuItem: {
-            menuitem_image: null,
             menuitem_name: '',
             menuitem_description: '',
             menuitem_price: '',
@@ -394,7 +395,6 @@ export default
         },
         selectedMenuItem: {
           id: null,
-          menuitem_image: null,
           menuitem_name: '',
           menuitem_description: '',
           menuitem_price: ''
@@ -420,6 +420,7 @@ export default
     },
 
     methods: {
+
       async fetchOwner() {
         const owner_id = this.$route.params.owner_id;
         if (owner_id) {
@@ -474,18 +475,10 @@ export default
             return { ...menuItem, ingredients };
           }));
 
-          // Update menuItemsWithIngredients to include the menuitem_image URL
-          this.menuItems = menuItemsWithIngredients.map(item => ({
-            ...item,
-            menuitem_image: this.getImageUrl(item.menuitem_image) // Replace with actual URL from your API
-          }));
+          this.menuItems = menuItemsWithIngredients;
         } catch (error) {
           console.error('Error fetching menu items:', error);
         }
-      },
-
-      getImageUrl(filename) {
-        return process.env.BASE_URL + '../../../../public/menuitem/' + filename;
       },
 
       async fetchItemIngredientChips(menuItemId) {
@@ -671,14 +664,8 @@ export default
       },
 
       saveMenuItemAndIngredients() {
-        const menu_item_data = {
-          menuitem_image: this.filename.name,
-          menuitem_name: this.model.MenuItem.menuitem_name,
-          menuitem_description: this.model.MenuItem.menuitem_description,
-          menuitem_price: this.model.MenuItem.menuitem_price,
-          menu_id: this.selectedTab
-        }
-        axios.post('http://127.0.0.1:8000/api/menu-items', menu_item_data)
+        this.model.MenuItem.menu_id = this.selectedTab;
+        axios.post('http://127.0.0.1:8000/api/menu-items', this.model.MenuItem)
           .then(response => {
             console.log('MenuItem save response:', response);
 
@@ -715,16 +702,6 @@ export default
               .catch(error => {
                 console.error('Error saving ingredients:', error);
               });
-
-            if (this.filename) {
-              const url = URL.createObjectURL(this.filename);
-              const link = document.createElement('a');
-              link.href = url;
-              link.download = this.filename.name;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
           })
           .catch(error => {
             console.error('Error saving menu item:', error);
@@ -772,7 +749,6 @@ export default
 
       resetMenuItemForm() {
         this.model.MenuItem = {
-          menuitem_image: null,
           menuitem_name: '',
           menuitem_description: '',
           menuitem_price: '',
@@ -857,13 +833,6 @@ export default
         this.selectedEstablishment = this.establishments.find(est => est.establishment_name === newVal);
         if (this.selectedEstablishment) {
           this.model.Menu.establishment_id = this.selectedEstablishment.id;
-        }
-      },
-
-      selectedFile(newValue, oldValue) {
-        if (newValue) {
-          console.log('File name:', newValue.name);
-          this.filename = newValue.name;
         }
       }
     }

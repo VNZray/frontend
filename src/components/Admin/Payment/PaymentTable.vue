@@ -1,9 +1,5 @@
 <template>
   <v-container>
-      <h1>Payment</h1>
-  </v-container>
-
-  <v-container>
       <!--Code here-->
       <h1>Payment table Here</h1>
   </v-container>

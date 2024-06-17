@@ -1,9 +1,5 @@
 <template>
     <v-container>
-        <h1>Apply</h1>
-    </v-container>
-
-    <v-container>
         <!--Code here-->
         <h1>Apply Form Here</h1>
     </v-container>

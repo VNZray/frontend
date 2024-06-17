@@ -1,9 +1,5 @@
 <template>
   <v-container>
-    <h1>Establishments</h1>
-  </v-container>
-
-  <v-container>
         <!--Code here-->
         <h1>Establishments Cards Here</h1>
     </v-container>
