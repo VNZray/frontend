@@ -2,12 +2,9 @@
   <v-container fluid class="d-flex justify-center align-center" style="padding: 0 25px 20px 25px;">
 
     <v-row align="center" justify="left">
-
       <!-- Search field and tabs -->
       <v-col cols="12">
-
         <v-row>
-
           <v-col cols="12" md="3">
             <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
               v-model="selectedEstablishmentName" variant="outlined"></v-select>
@@ -27,79 +24,127 @@
             </v-tabs>
           </v-col>
           <v-col cols="12" md="1">
-
             <!-- Add Buttons -->
             <v-menu>
               <template v-slot:activator="{ props }">
-                <v-btn variant=outlined class="menu-btn" v-bind="props">ACTIONS</v-btn>
+                <v-btn class="menu-btn" v-bind="props" color="#1E4E72" prepend-icon="mdi-view-headline">ACTIONS</v-btn>
               </template>
               <v-list>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn variant=tonal class="add-btn" color="primary" @click="createMenuDialog = true">
-                      Add Menu
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createMenuDialog = true">
+                      Add New Menu
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn variant=tonal class="add-btn" color="primary" @click="createItemDialog = true">
-                      Add Menu Item
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="createItemDialog = true">
+                      Add New Menu Item
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn variant=tonal class="add-btn" color="primary" @click="openIngredientsDialog()">
-                      Ingredients
+                    <v-btn variant=outlined class="add-btn" color="primary" @click="openIngredientsDialog()">
+                      Ingredients Management
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item>
                   <v-list-item-title>
-                    <v-btn v-if="selectedTab" variant=tonal class="add-btn" color="red"
+                    <v-btn v-if="selectedTab" variant=outlined class="add-btn" color="red"
                       @click="confirmDeleteMenu(selectedTab)">
-                      Delete Menu
+                      Delete Current Menu
                     </v-btn>
                   </v-list-item-title>
                 </v-list-item>
-                <v-list-item>
+                <!-- <v-list-item>
                   <v-list-item-title>
-                    <v-btn variant="tonal" class="add-btn" prepend-icon="mdi-chart-bar" color="pink"
+                    <v-btn disabled variant="tonal" class="add-btn" prepend-icon="mdi-chart-bar" color="pink"
                       @click="openReportsDialog()">Sales report</v-btn>
                   </v-list-item-title>
-                </v-list-item>
+                </v-list-item> -->
               </v-list>
             </v-menu>
-
           </v-col>
         </v-row>
       </v-col>
 
       <v-row>
-        <!-- Display cards -->
-        <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
+        <!-- Loading state -->
+        <v-col v-if="loading" cols="12" class="text-center">
+          <h3>Loading...</h3>
+          <v-progress-linear color="#1E4E72" indeterminate></v-progress-linear>
+        </v-col>
 
-          <v-card elevation="3" outlined class="card-custom">
-            <v-card-title class="card-title"><br>{{ menuItem.menuitem_name }}</v-card-title>
-            <v-card-text>
-              {{ menuItem.menuitem_description }}
-              <br><br>
-              {{ menuItem.menuitem_price }}
-            </v-card-text>
-            <v-card-actions>
-              <v-btn variant="tonal" class="add-actions" icon="mdi-circle-edit-outline" density="comfortable"
-                color="blue" @click="editMenuItem(menuItem)"></v-btn>
-              <v-btn variant="tonal" class="add-actions" icon="mdi-close-circle-outline" density="comfortable"
-                color="red" @click="confirmDeleteMenuItem(menuItem)"></v-btn>
-            </v-card-actions>
-          </v-card>
+        <!-- Items loaded -->
+        <v-col v-else-if="filteredMenuItems.length > 0">
+          <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
+            <v-card class="item_card" style="height: 220px;">
+              <v-row>
+                <v-col cols="12" md="5" style="height: 100%;">
+                  <div class="name_container">
+                    <h1>{{ menuItem.menuitem_name }}</h1>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="7" style="height: 100%;">
+                  <v-row>
+                    <div class="item_container">
+                      <v-container>
+                        <v-col>
+                          <v-row>
+                            <h2 style="text-align: left;">Description:</h2>
+                            <h4 style="text-align: left;">
+                              {{ menuItem.menuitem_description }}
+                            </h4>
+                          </v-row>
+                          <v-row>
+                            <h2 style="text-align: left;">Ingredients:</h2>
+                            <v-chip-group column>
+                              <v-chip density="compact" size="small" v-for="ingredient in menuItem.ingredients"
+                                :key="ingredient.id" class="ma-1">
+                                {{ ingredient.ingredient_name }}
+                              </v-chip>
+                            </v-chip-group>
+                          </v-row>
+                          <v-row>
+                            <h2 style="text-align: left;">Price: {{ menuItem.menuitem_price }}</h2>
+                          </v-row>
+                        </v-col>
+                      </v-container>
+                    </div>
+                    <div class="action_container">
+                      <v-col>
+                        <v-row>
+                          <v-col cols="12" md="6">
+                            <v-btn variant="tonal" class="add-actions" prepend-icon="mdi-circle-edit-outline"
+                              color="blue" @click="editMenuItem(menuItem)">EDIT</v-btn>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <v-btn variant="tonal" class="add-actions" prepend-icon="mdi-close-circle-outline"
+                              color="red" @click="confirmDeleteMenuItem(menuItem)">DELETE</v-btn>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </div>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-col>
 
+        <!-- Delayed no items found message -->
+        <v-col v-else cols="12" class="text-center">
+          <v-col cols="12" class="text-center">
+            <h3>No items found.</h3>
+          </v-col>
         </v-col>
       </v-row>
     </v-row>
 
-    <reports ref="salesReports" />
+    <!-- <reports ref="salesReports" /> -->
 
     <!-- Add Menu Dialog -->
     <v-dialog v-model="createMenuDialog" max-width="500">
@@ -179,7 +224,7 @@
             <tbody style="max-height: 672px; overflow: auto;">
               <tr v-for="(ingredient, index) in ingredients" :key="index" :class="{ 'even-row': index % 2 === 0 }">
                 <td>{{ ingredient.ingredient_name }}</td>
-                <td class="text-center" style="width: 150px;">
+                <td class="text-center">
                   <v-btn style="background-color: transparent" elevation="0" icon
                     @click="deleteItemIngredient(ingredient)">
                     <v-icon color="red">mdi-delete</v-icon>
@@ -318,6 +363,7 @@ export default
         errorlist: [],
         menus: [],
         menuItems: [],
+        loading: true,
         ingredients: [],
         selectedIngredients: [],
         selectedTab: 0,
@@ -415,29 +461,55 @@ export default
         }
       },
 
-      fetchMenusAndMenuItems() {
-        axios.get(`http://127.0.0.1:8000/api/menus/establishment/${this.selectedEstablishment}`)
-          .then(response => {
-            console.log("Menus data:", response.data);
-            this.menus = response.data.menus;
-            if (this.menus.length > 0) {
-              this.selectedTab = this.menus[0].id;
-              this.fetchMenuItems();
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching menus:', error);
-          });
+      async fetchMenusAndMenuItems() {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/menus/establishment/${this.selectedEstablishment}`);
+          this.menus = response.data.menus;
+          if (this.menus.length > 0) {
+            this.selectedTab = this.menus[0].id;
+            this.fetchMenuItemsWithIngredients();
+          }
+        } catch (error) {
+          console.error('Error fetching menus:', error);
+        }
       },
 
-      fetchMenuItems() {
-        axios.get('http://127.0.0.1:8000/api/menu-items')
-          .then(response => {
-            this.menuItems = response.data.menuItems;
-          })
-          .catch(error => {
-            console.error('Error fetching menu items:', error);
-          });
+      async fetchMenuItemsWithIngredients() {
+        try {
+          const response = await axios.get('http://127.0.0.1:8000/api/menu-items');
+          const menuItems = response.data.menuItems;
+
+          const menuItemsWithIngredients = await Promise.all(menuItems.map(async (menuItem) => {
+            const ingredients = await this.fetchItemIngredientChips(menuItem.id);
+            return { ...menuItem, ingredients };
+          }));
+
+          this.menuItems = menuItemsWithIngredients;
+
+          // Update filteredMenuItems based on selectedTab or other criteria
+          this.filteredMenuItems = this.menuItems.filter(item =>
+            item.menu_id === this.selectedTab &&
+            item.menuitem_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+          );
+
+        } catch (error) {
+          console.error('Error fetching menu items:', error);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      async fetchItemIngredientChips(menuItemId) {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/menuitem-ingredients/${menuItemId}`);
+          return response.data.menuitemIngredients.map(item => ({
+            id: item.id,
+            ingredient_name: item.ingredient.ingredient_name
+          }));
+        } catch (error) {
+          console.error('Error fetching ingredients:', error);
+          return [];
+        }
       },
 
       fetchIngredients() {
@@ -447,6 +519,16 @@ export default
           })
           .catch(error => {
             console.error('Error fetching menu items:', error);
+          });
+      },
+
+      fetchIngredientNames() {
+        axios.get('http://127.0.0.1:8000/api/ingredients/names')
+          .then(response => {
+            this.ingredientNames = response.data.ingredient_names;
+          })
+          .catch(error => {
+            console.error('Error fetching ingredient names:', error);
           });
       },
 
@@ -463,16 +545,6 @@ export default
           })
           .catch(error => {
             console.error('Error fetching ingredients:', error);
-          });
-      },
-
-      fetchIngredientNames() {
-        axios.get('http://127.0.0.1:8000/api/ingredients/names')
-          .then(response => {
-            this.ingredientNames = response.data.ingredient_names;
-          })
-          .catch(error => {
-            console.error('Error fetching ingredient names:', error);
           });
       },
 
@@ -497,7 +569,6 @@ export default
         axios.delete(`http://127.0.0.1:8000/api/menus/${this.selectedMenuId}/delete`)
           .then(response => {
             console.log(response.data);
-            alert("Menu deleted successfully");
             this.deleteMenuDialog = false;
             this.fetchMenusAndMenuItems();
           })
@@ -510,9 +581,9 @@ export default
         axios.get(`http://127.0.0.1:8000/api/menu-items/${menuItem.id}/edit`)
           .then(response => {
             this.selectedMenuItem = response.data.menuItem;
-            this.selectedMenuItemId = menuItem.id; // Store the menu item ID
+            this.selectedMenuItemId = menuItem.id;
             this.editMenuItemDialog = true;
-            this.fetchItemIngredients(menuItem.id); // Ensure ingredients are fetched correctly
+            this.fetchItemIngredients(menuItem.id);
           })
           .catch(error => {
             console.error('Error fetching menu item data:', error);
@@ -552,31 +623,26 @@ export default
         Promise.all(ingredientRequests)
           .then(results => {
             console.log('All ingredients saved:', results);
-            alert('New ingredients added successfully!');
             this.selectedMenuItemIngredients = [];
             this.fetchItemIngredients(this.selectedMenuItemId);
+            this.fetchMenuItemsWithIngredients();
           })
           .catch(error => {
             console.error('Error adding new ingredients:', error);
           });
       },
 
-
-
-
       saveEditMenuItem(id) {
         axios.put(`http://127.0.0.1:8000/api/menu-items/${id}/update`, this.selectedMenuItem)
           .then(response => {
             console.log(response.data);
-            alert("Menu item updated successfully");
             this.editMenuItemDialog = false;
-            this.fetchMenuItems();
+            this.fetchMenuItemsWithIngredients();
           })
           .catch(error => {
             console.error('Error updating menu item:', error);
           });
       },
-
 
       confirmDeleteMenuItem(menuItem) {
         this.selectedMenuItem = menuItem;
@@ -587,9 +653,8 @@ export default
         axios.delete(`http://127.0.0.1:8000/api/menu-items/${this.selectedMenuItem.id}/delete`)
           .then(response => {
             console.log(response.data);
-            alert("Menu item deleted successfully");
             this.deleteMenuItemDialog = false;
-            this.fetchMenuItems();
+            this.fetchMenuItemsWithIngredients();
           })
           .catch(error => {
             console.error('Error deleting menu item:', error);
@@ -618,7 +683,6 @@ export default
 
       saveMenuItemAndIngredients() {
         this.model.MenuItem.menu_id = this.selectedTab;
-
         axios.post('http://127.0.0.1:8000/api/menu-items', this.model.MenuItem)
           .then(response => {
             console.log('MenuItem save response:', response);
@@ -627,9 +691,7 @@ export default
             if (!menuItemId) {
               throw new Error('MenuItem ID is not found in the response');
             }
-
             console.log('MenuItem ID:', menuItemId);
-
             const ingredientRequests = this.selectedIngredients.map(ingredientName => {
               return axios.get(`http://127.0.0.1:8000/api/ingredients/find-id-by-name?name=${ingredientName}`)
                 .then(response => {
@@ -653,7 +715,6 @@ export default
             Promise.all(ingredientRequests)
               .then(results => {
                 console.log('All ingredients saved:', results);
-                alert('Menu item and ingredients saved successfully!');
                 this.resetMenuItemForm();
               })
               .catch(error => {
@@ -681,7 +742,9 @@ export default
           .then(response => {
             console.log('Ingredient deleted:', response.data);
             alert('Ingredient deleted successfully');
-            this.fetchItemIngredients(this.selectedMenuItem.id); // Refresh the ingredient list
+            this.fetchItemIngredients(this.selectedMenuItem.id);
+            this.fetchMenuItemsWithIngredients();
+
           })
           .catch(error => {
             console.error('Error deleting ingredient:', error);
@@ -696,7 +759,6 @@ export default
               console.error('Request data:', error.request);
               alert('Error deleting ingredient: No response from server');
             } else {
-              // Other errors
               console.error('Error message:', error.message);
               alert(`Error deleting ingredient: ${error.message}`);
             }
@@ -712,7 +774,7 @@ export default
         };
         this.selectedIngredients = [];
         this.createItemDialog = false;
-        this.fetchMenuItems();
+        this.fetchMenuItemsWithIngredients();
       },
 
       openIngredientsDialog() {
@@ -737,7 +799,6 @@ export default
           axios.put(`http://127.0.0.1:8000/api/ingredients/${this.ingredientForm.id}`, this.ingredientForm)
             .then(response => {
               console.log(response.data);
-              alert("Ingredient updated successfully");
               this.addEditIngredientDialog = false;
               this.fetchIngredients();
             })
@@ -748,7 +809,6 @@ export default
           axios.post('http://127.0.0.1:8000/api/ingredients', this.ingredientForm)
             .then(response => {
               console.log(response.data);
-              alert("Ingredient added successfully");
               this.addEditIngredientDialog = false;
               this.fetchIngredients();
             })
@@ -767,7 +827,6 @@ export default
         axios.delete(`http://127.0.0.1:8000/api/ingredients/${this.selectedIngredient.id}`)
           .then(response => {
             console.log(response.data);
-            alert("Ingredient deleted successfully");
             this.deleteIngredientDialog = false;
             this.fetchIngredients();
           })
@@ -799,12 +858,44 @@ export default
 </script>
 
 <style scoped>
-.card-custom {
+.name_container {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1E4E72;
+}
+
+.item_container {
+  height: 180px;
+}
+
+.action_container {
+  height: 30px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+h2 {
+  font-size: 13px;
+}
+
+h3 {
+  text-align: center;
+  font-size: 20px;
+  color: #1E4E72;
+}
+
+.item_card {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.card-custom:hover {
+.item_card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
@@ -826,8 +917,9 @@ export default
   color: #1E4E72;
 }
 
-.add-actions .v-icon {
+.add-actions {
   color: #1E4E72;
+  min-width: 100px;
 }
 
 .add-btn {
