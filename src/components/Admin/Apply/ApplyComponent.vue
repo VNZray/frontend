@@ -1,12 +1,12 @@
 <template>
-    <OwnerNavigationComponents />
     <v-container>
-        <h1 style="color: #1E4E72;">Owner Profile</h1>
+        <!--Code here-->
+        <h1>Apply Form Here</h1>
     </v-container>
 </template>
 
 <style scoped>
-h2 {
+h2, h1 {
     color: #607683;
 }
 </style>

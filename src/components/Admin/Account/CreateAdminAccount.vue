@@ -70,8 +70,8 @@
 
                         <v-row>
                             <v-col>
-                                <v-combobox prepend-inner-icon="mdi-account" v-model="model.account.name" label="Name:"
-                                    variant="outlined" :items="ownerNames"></v-combobox>
+                                <v-select prepend-inner-icon="mdi-account" v-model="model.account.name" label="Name:"
+                                    variant="outlined" :items="ownerNames"></v-select>
                             </v-col>
                         </v-row>
 
@@ -143,8 +143,6 @@ export default {
             filteredAccountType: null,
             filteredAccounts: [], // New property to hold filtered accounts
             searchQuery: '', // New property to hold search query
-
-
         };
     },
     computed: {

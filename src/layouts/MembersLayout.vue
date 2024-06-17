@@ -1,9 +1,8 @@
-import Members from '@/pages/Members.vue';
 <template>
     <v-container>
             <h1>Members</h1>
     </v-container>
-    <Members />
+    <MemberComponent />
 </template>
 
 <style scoped>

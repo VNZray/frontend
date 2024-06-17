@@ -10,7 +10,7 @@
             </v-col>
 
             <v-col md="2" sm="4" cols="12">
-                <v-select label="Select Status" :items="['Pending', 'Booked', 'Checked-in', 'Canceled']"
+                <v-select label="Select Status" :items="['Pending', 'Booked', 'Checked-in', 'Cancelled']"
                     v-model="selectedStatus" variant="outlined"></v-select>
             </v-col>
 

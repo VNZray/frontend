@@ -1,8 +1,7 @@
-<script setup>
-import PaymentLayout from '../../layouts/PaymentLayout.vue';
-</script>
-
 <template>
+    <v-container>
+        <h1 style="color: #1E4E72;">Payment</h1>
+    </v-container>
     <AdminNavigation />
-    <PaymentLayout />
+    <PaymentTable />
 </template>
