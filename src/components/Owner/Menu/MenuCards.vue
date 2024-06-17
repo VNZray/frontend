@@ -75,25 +75,24 @@
       </v-col>
 
       <v-row>
-        <template v-if="filteredMenuItems.length > 0">
+        <template v-if="loading">
+          <v-col cols="12" class="text-center">
+            <h3>Loading...</h3>
+            <v-progress-linear color="#1E4E72" indeterminate></v-progress-linear>
+          </v-col>
+        </template>
+        <template v-else-if="filteredMenuItems.length > 0">
           <v-col v-for="menuItem in filteredMenuItems" :key="menuItem.id" cols="12" md="3" sm="4" lg="3">
-            <!-- Begin v-card component integration -->
             <v-card elevation="6" max-width="430" max-height="540" min-height="540">
               <v-img height="250" :src="menuItem.menuitem_image" cover></v-img>
-
               <v-card-item>
                 <v-card-title class="text-left">{{ menuItem.menuitem_name }} <p style="color: red;">{{
                   menuItem.menuitem_price }} Pesos</p> </v-card-title>
               </v-card-item>
-
               <v-card-text style="padding-bottom: 0">
-                <p style="min-height: 60px;" class="text-left">
-                  {{ menuItem.menuitem_description }}
-                </p>
+                <p style="min-height: 60px;" class="text-left">{{ menuItem.menuitem_description }}</p>
               </v-card-text>
-
               <v-card-title class="text-left">Ingredients</v-card-title>
-
               <div class="px-4 mb-2">
                 <v-chip-group>
                   <v-chip color="primary" v-for="ingredient in menuItem.ingredients" :key="ingredient.id">
@@ -101,30 +100,29 @@
                   </v-chip>
                 </v-chip-group>
               </div>
-
               <div style="display: flex; align-items: last baseline; justify-content: center;">
                 <v-card-actions style="width: 430px;">
                   <v-row>
                     <v-col>
                       <v-btn prepend-icon="mdi-delete" width="100%" color="red"
                         @click="confirmDeleteMenuItem(menuItem)">
-                        Remove</v-btn>
+                        Remove
+                      </v-btn>
                     </v-col>
                     <v-col>
                       <v-btn prepend-icon="mdi-pencil" width="100%" color="primary" @click="editMenuItem(menuItem)">
-                        Edit</v-btn>
+                        Edit
+                      </v-btn>
                     </v-col>
                   </v-row>
                 </v-card-actions>
               </div>
             </v-card>
-            <!-- End v-card component integration -->
           </v-col>
         </template>
         <template v-else>
           <v-col cols="12" class="text-center">
-            <h3>Loading...</h3>
-            <v-progress-linear color="#1E4E72" indeterminate></v-progress-linear>
+            <h3>No items found.</h3>
           </v-col>
         </template>
       </v-row>
@@ -373,6 +371,7 @@ export default
         selectedMenuItemIngredients: [],
         selectedMenuItemId: null,
         quantity: '',
+        loading: true,
         editedMenuItem: {},
         ingredientForm: {
           id: null,
@@ -481,6 +480,8 @@ export default
           }));
         } catch (error) {
           console.error('Error fetching menu items:', error);
+        } finally {
+          this.loading = false; // Ensure loading is set to false after fetching
         }
       },
 
