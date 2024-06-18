@@ -3,6 +3,7 @@
     <v-container>
         <h1 style="color: #1E4E72;">Establishment Profile</h1>
     </v-container>
+    <MyEstablishment />
 </template>
 
 <style scoped>

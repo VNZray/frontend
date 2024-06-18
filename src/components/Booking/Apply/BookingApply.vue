@@ -117,8 +117,8 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-select :items="barangay_options" v-model="model.establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-select>
+                    <v-select :items="barangay_options" v-model="model.establishment.establishment_address"
+                      label="Establishment Address" variant="outlined" required></v-select>
                   </v-col>
                 </v-row>
 
@@ -185,7 +185,7 @@
                 </v-col>
 
                 <v-row v-for="(establishment, index) in additional_establishments" :key="index">
-                  <v-col style="margin-top: 40px" >
+                  <v-col style="margin-top: 40px">
                     <h3 class="text-center"> New Establishment </h3>
                   </v-col>
                   <v-col cols="12" md="12">
@@ -194,8 +194,8 @@
                   </v-col>
 
                   <v-col cols="12" md="6">
-                    <v-select :items="barangay_options" v-model="establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-select>
+                    <v-select :items="barangay_options" v-model="establishment.establishment_address"
+                      label="Establishment Address" variant="outlined" required></v-select>
                   </v-col>
 
                   <v-col cols="12" md="6">
@@ -538,7 +538,7 @@ export default {
         },
 
         payment: {
-          owner_id: null,
+          establishment_id: null,
           payment_name: null,
           payment_amount: null,
           payment_method: null,
@@ -634,14 +634,10 @@ export default {
           "http://127.0.0.1:8000/api/establishment",
           establishmentData
         );
+
         console.log("Establishment data:", establishmentResponse.data);
         const establishment_id = establishmentResponse.data.Establishment.id;
         this.establishment = establishmentResponse.data.Establishment;
-
-        console.log("Owner Data: " + this.owner);
-        console.log("Establishment Data: " + this.establishment);
-        console.log("Membership Data: " + this.membership);
-        console.log("Payment Data: " + this.payment);
 
         console.log("Owner ID: " + owner_id);
         console.log("Establishment ID: " + establishment_id);
@@ -654,7 +650,7 @@ export default {
     },
     async submitPayment() {
       const paymentData = {
-        owner_id: this.owner.id,
+        establishment_id: this.establishment.id,
         payment_name:
           this.owner.owner_first_name +
           " " +
@@ -664,20 +660,14 @@ export default {
         payment_type: this.model.payment.payment_type,
         reference_number: this.model.payment.reference_number,
         payment_date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
-        establishment_name: this.establishment.establishment_name,
-
       };
-
-      console.log(paymentData);
 
       const membershipData = {
-        membership_status: "Active",
+        membership_status: "Pending",
         membership_date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
         establishment_id: this.establishment.id,
-        establishment_name: this.model.establishment.establishment_name,
+        establishment_name: this.model.establishment.establishment_name
       };
-      console.log(membershipData);
-
       // INSERT PAYMENT DATA
       const paymentResponse = await axios.post(
         "http://127.0.0.1:8000/api/membership_payment",
@@ -692,7 +682,7 @@ export default {
         "http://127.0.0.1:8000/api/membership",
         membershipData
       );
-      console.log("Payment data:", membershipResponse.data);
+      console.log("Membership data:", membershipResponse.data);
       const membership_id = membershipResponse.data.Membership.id;
       this.membership = membershipResponse.data.Membership;
 
@@ -700,28 +690,28 @@ export default {
       console.log("Membership ID: " + membership_id);
 
       this.model.owner.owner_first_name = "",
-        this.model.owner.owner_middle_name = "",
-        this.model.owner.owner_last_name = "",
-        this.model.owner.owner_contact_number = "",
-        this.model.owner.owner_email = "",
-        this.model.owner.owner_age = "",
-        this.model.owner.owner_province = "",
-        this.model.owner.owner_municipality = "",
-        this.model.owner.owner_barangay = "",
-        this.model.owner.owner_civil_status = "",
-        this.model.owner.owner_gender = "",
-        this.model.owner.owner_birthdate = "",
+      this.model.owner.owner_middle_name = "",
+      this.model.owner.owner_last_name = "",
+      this.model.owner.owner_contact_number = "",
+      this.model.owner.owner_email = "",
+      this.model.owner.owner_age = "",
+      this.model.owner.owner_province = "",
+      this.model.owner.owner_municipality = "",
+      this.model.owner.owner_barangay = "",
+      this.model.owner.owner_civil_status = "",
+      this.model.owner.owner_gender = "",
+      this.model.owner.owner_birthdate = "",
 
-        this.model.establishment.establishment_name = "",
-        this.model.establishment.establishment_capacity = "",
-        this.model.establishment.establishment_total_room = "",
-        this.model.establishment.establishment_address = "",
-        this.model.establishment.establishment_email = "",
-        this.model.establishment.establishment_contact_number = "",
-        this.model.establishment.establishment_type = "",
-        this.model.establishment.establishment_description = "",
+      this.model.establishment.establishment_name = "",
+      this.model.establishment.establishment_capacity = "",
+      this.model.establishment.establishment_total_room = "",
+      this.model.establishment.establishment_address = "",
+      this.model.establishment.establishment_email = "",
+      this.model.establishment.establishment_contact_number = "",
+      this.model.establishment.establishment_type = "",
+      this.model.establishment.establishment_description = "",
 
-        this.paymentDialog = false;
+      this.paymentDialog = false;
       this.paymentReceiptDialog = true;
     },
     async downloadReceipt() {

@@ -207,7 +207,6 @@
                             Check-out
                         </v-btn>
                     </v-col>
-
                 </v-row>
             </v-card-text>
         </v-card>
@@ -223,13 +222,13 @@ export default {
         return {
             bookingDetailsDialog: false,
             owner: {},
-            establishment: null,
             guest: [],
             room: [],
             bookings: [],
             establishments: [],
             selectedEstablishment: null,
-            selectedStatus: 'Pending',  // Set default status to "Pending"
+            establishment: null,
+            selectedStatus: 'Pending',
             dialog: false,
             selectedDetails: null,
             showCheckInButton: false,

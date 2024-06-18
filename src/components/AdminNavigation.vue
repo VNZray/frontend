@@ -68,37 +68,8 @@ export default {
     },
     created() {
         this.fetchAccount();
-        this.fetchEstablishment();
     },
     methods: {
-        fetchEstablishment() {
-            const establishment_id = this.$route.params.establishment_id;
-
-            if (establishment_id) {
-                axios
-                    .get(`http://127.0.0.1:8000/api/establishment/${establishment_id}`)
-                    .then((response) => {
-                        console.log("Establishment data:", response.data); // Log the response
-                        this.accommodations = response.data.Establishment;
-                        console.log(this.accommodations.id);
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching establishment:", error);
-                    });
-            } else {
-                axios
-                    .get("http://127.0.0.1:8000/api/establishment")
-                    .then((response) => {
-                        console.log("Establishments data:", response.data); // Log the response
-                        this.accommodations = response.data.Establishment;
-                        console.log(this.accommodations.id);
-
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching establishment:", error);
-                    });
-            }
-        },
         fetchAccount() {
             const owner_id = this.$route.params.owner_id;
 

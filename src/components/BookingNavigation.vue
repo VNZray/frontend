@@ -23,7 +23,8 @@
         </li>
 
         <li style="margin-left: 20px;">
-          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }" style="display: flex; align-items: center; justify-content: center;">
+          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }"
+            style="display: flex; align-items: center; justify-content: center;">
             <div class="user-profile">
               <img src="/public/Guest/guest1.jpg" style="border-radius: 50%;" width="36.4px" height="36.4px" alt="">
             </div>
@@ -88,34 +89,8 @@ export default {
   created() {
     this.fetchAccount();
     this.fetchAccountId();
-    this.fetchEstablishment();
-    this.fetchEstablishmentId();
   },
   methods: {
-    fetchEstablishment() {
-      axios
-        .get("http://127.0.0.1:8000/api/establishment")
-        .then((response) => {
-          console.log("Establishment data:", response.data); // Log the response
-          this.accommodations = response.data.Establishment;
-        })
-        .catch((error) => {
-          console.error("Error fetching establishment:", error);
-        });
-    },
-    fetchEstablishmentId() {
-      const establishment_id = this.$route.params.establishment_id;
-
-      axios
-        .get(`http://127.0.0.1:8000/api/establishment/${establishment_id}`)
-        .then((response) => {
-          console.log("Establishment data:", response.data); // Log the response
-          this.accommodations = response.data.Establishment;
-        })
-        .catch((error) => {
-          console.error("Error fetching establishment:", error);
-        });
-    },
     fetchAccount() {
       axios
         .get("http://127.0.0.1:8000/api/account")

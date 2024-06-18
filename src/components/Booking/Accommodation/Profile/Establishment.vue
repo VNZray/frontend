@@ -38,17 +38,17 @@
                 <v-row>
                   <v-col>
                     <h2 style="font-size: 20px; text-align: center">You're not signed-in!</h2>
-                    <h2 style="font-size: 20px; text-align: center">Please sign in to check-in</h2>
+                    <h2 style="font-size: 20px; text-align: center">Sign in to proceed</h2>
                   </v-col>
                 </v-row>
 
                 <v-row>
                   <v-col>
-                    <v-btn @click="closeSignInDialog" style="width: 100%;">Cancel</v-btn>
+                    <v-btn elevation="6" @click="closeSignInDialog" style="width: 100%;">Cancel</v-btn>
                   </v-col>
 
                   <v-col>
-                    <v-btn to="/login" style="width: 100%;" color="primary">Sign In</v-btn>
+                    <v-btn elevation="6" to="/login" style="width: 100%;" color="primary">Sign In</v-btn>
                   </v-col>
                 </v-row>
               </v-card-text>
