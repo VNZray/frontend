@@ -260,12 +260,14 @@ export default {
     },
     data: () => ({
         current_date: null,
+        room_id: null,
 
         tab: "booking",
         dialog: false,
         paymentReceiptDialog: false,
 
         establishment: {},
+        rooms: {},
         account: {},
         booking: {},
         payment: {},
@@ -336,11 +338,24 @@ export default {
                 this.tab = "booking";
             }
         },
+        async updateRoomStatus(room_id) {
+            try {
+                await axios.put(`http://127.0.0.1:8000/api/room/${room_id}/update`, {
+                    room_status: 'Booked'
+                });
+
+                console.log("Room updated");
+
+            } catch (error) {
+                console.error("Error updating room status:", error);
+            }
+        },
         async submitBooking() {
 
             const bookingData = {
                 guest_id: this.account.guest_id,
                 establishment_id: this.establishment.id,
+                room_id: this.room_id,
                 room_number: this.model.booking.room_number,
                 booking_total_pax: this.model.booking.booking_total_pax,
                 booking_date: this.current_date,
@@ -381,6 +396,8 @@ export default {
                 console.log("Booking ID: " + booking_id);
                 console.log("Payment ID: " + payment_id);
 
+                this.updateRoomStatus(this.room_id);
+
                 this.paymentReceiptDialog = true;
             } catch (error) {
                 console.error("Error during form submission:", error);
@@ -390,17 +407,6 @@ export default {
         clearForm() {
             this.booking.checkInDate = null;
             this.booking.checkOutDate = null;
-        },
-        fetchEstablishment() {
-            axios
-                .get("http://127.0.0.1:8000/api/establishment")
-                .then((response) => {
-                    console.log("Establishment data:", response.data); // Log the response
-                    this.establishment = response.data.Establishment;
-                })
-                .catch((error) => {
-                    console.error("Error fetching establishment:", error);
-                });
         },
         fetchEstablishmentId() {
             const establishment_id = this.$route.params.establishment_id;
@@ -413,17 +419,6 @@ export default {
                 })
                 .catch((error) => {
                     console.error("Error fetching establishment:", error);
-                });
-        },
-        fetchAccount() {
-            axios
-                .get("http://127.0.0.1:8000/api/account")
-                .then((response) => {
-                    console.log("Account data:", response.data); // Log the response
-                    this.account = response.data.Account;
-                })
-                .catch((error) => {
-                    console.error("Error fetching account:", error);
                 });
         },
         fetchAccountId() {
@@ -454,14 +449,13 @@ export default {
         },
     },
     created() {
-        this.fetchAccount();
         this.fetchAccountId();
-        this.fetchEstablishment();
         this.fetchEstablishmentId();
         this.getCurrentDate();
     },
     mounted() {
         this.model.booking.room_number = this.selectedRoom.room_number;
+        this.room_id = this.selectedRoom.id;
     },
 };
 </script>

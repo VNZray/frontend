@@ -1,8 +1,9 @@
 <template>
     <OwnerNavigationComponents />
-    <v-container style="padding: 10px 0;">
+    <v-container>
         <h1 style="color: #1E4E72;">Establishment Profile</h1>
     </v-container>
+    <MyEstablishment />
 </template>
 
 <style scoped>

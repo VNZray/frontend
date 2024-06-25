@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import GuestNavigation from '@/components/GuestNavigation.vue';
+import MyBooking from '@/components/guest/booking/MyBooking.vue';
 </script>
 
 <template>
     <GuestNavigation />
-    <v-container style="padding: 10px 0;">
+    <v-container>
         <h1 style="color: #1E4E72;">My Booking</h1>
     </v-container>
+
+    <MyBooking />
 
 
 </template>

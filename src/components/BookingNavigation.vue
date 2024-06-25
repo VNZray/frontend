@@ -22,11 +22,15 @@
           </RouterLink>
         </li>
 
-        <li>
-  <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }">
-    <i class="fas fa-user"></i>
-  </RouterLink>
-</li>
+        <li style="margin-left: 20px;">
+          <RouterLink :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }"
+            style="display: flex; align-items: center; justify-content: center;">
+            <div class="user-profile">
+              <img src="/public/Guest/guest1.jpg" style="border-radius: 50%;" width="36.4px" height="36.4px" alt="">
+            </div>
+          </RouterLink>
+
+        </li>
       </ul>
     </v-navigation>
 
@@ -85,34 +89,8 @@ export default {
   created() {
     this.fetchAccount();
     this.fetchAccountId();
-    this.fetchEstablishment();
-    this.fetchEstablishmentId();
   },
   methods: {
-    fetchEstablishment() {
-      axios
-        .get("http://127.0.0.1:8000/api/establishment")
-        .then((response) => {
-          console.log("Establishment data:", response.data); // Log the response
-          this.accommodations = response.data.Establishment;
-        })
-        .catch((error) => {
-          console.error("Error fetching establishment:", error);
-        });
-    },
-    fetchEstablishmentId() {
-      const establishment_id = this.$route.params.establishment_id;
-
-      axios
-        .get(`http://127.0.0.1:8000/api/establishment/${establishment_id}`)
-        .then((response) => {
-          console.log("Establishment data:", response.data); // Log the response
-          this.accommodations = response.data.Establishment;
-        })
-        .catch((error) => {
-          console.error("Error fetching establishment:", error);
-        });
-    },
     fetchAccount() {
       axios
         .get("http://127.0.0.1:8000/api/account")
@@ -177,9 +155,9 @@ header {
 
 .nav-links {
   display: flex;
+  align-items: center;
+  justify-content: center;
   list-style-type: none;
-  margin: 0;
-  padding: 0;
   color: white;
 }
 
@@ -216,5 +194,11 @@ h3 {
 
 .logout-dialog .v-card-actions {
   padding: 16px;
+}
+
+.user-profile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

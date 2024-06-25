@@ -9,10 +9,9 @@
 
         <v-list density="compact" nav>
             <v-list-item prepend-icon="mdi-home" title="Home" value="home"
-            :to="{ name: 'HomepageLoggedIn', params: { account_id: account.guest_id } }"
-            ></v-list-item>            <v-list-item prepend-icon="mdi-book-open" title="Booking" value="shared"
-            :to="{ name: 'guestBooking', params: { account_id: account.guest_id } }"
-            ></v-list-item>
+                :to="{ name: 'HomepageLoggedIn', params: { account_id: account.guest_id } }"></v-list-item> <v-list-item
+                prepend-icon="mdi-book-open" title="Booking Transactions" value="shared"
+                :to="{ name: 'guestBooking', params: { account_id: account.guest_id } }"></v-list-item>
             <v-list-item prepend-icon="mdi-account" title="My Profile" value="MyProfile"
                 :to="{ name: 'GuestProfile', params: { account_id: account.guest_id } }"></v-list-item>
         </v-list>
@@ -23,6 +22,7 @@
             </div>
         </template>
     </v-navigation-drawer>
+
 </template>
 
 
@@ -32,7 +32,6 @@ import axios from "axios";
 export default {
     data() {
         return {
-            accommodations: {},
             account: {}, // Handle account state locally
             logoutDialog: false, // Dialog state
             avatarUrl: "https://cdn-icons-png.flaticon.com/128/10438/10438143.png",
@@ -42,38 +41,12 @@ export default {
     created() {
         this.fetchAccount();
         this.fetchAccountId();
-        this.fetchEstablishment();
-        this.fetchEstablishmentId();
     },
     methods: {
         navigateToHomepage() {
             const guest_id = this.$route.params.account_id;
 
             this.$router.push(`/account/${guest_id}`);
-        },
-        fetchEstablishment() {
-            axios
-                .get("http://127.0.0.1:8000/api/establishment")
-                .then((response) => {
-                    console.log("Establishment data:", response.data); // Log the response
-                    this.accommodations = response.data.Establishment;
-                })
-                .catch((error) => {
-                    console.error("Error fetching establishment:", error);
-                });
-        },
-        fetchEstablishmentId() {
-            const establishment_id = this.$route.params.establishment_id;
-
-            axios
-                .get(`http://127.0.0.1:8000/api/establishment/${establishment_id}`)
-                .then((response) => {
-                    console.log("Establishment data:", response.data); // Log the response
-                    this.accommodations = response.data.Establishment;
-                })
-                .catch((error) => {
-                    console.error("Error fetching establishment:", error);
-                });
         },
         fetchAccount() {
             axios

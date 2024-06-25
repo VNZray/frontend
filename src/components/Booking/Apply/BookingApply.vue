@@ -83,20 +83,20 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_province" label="Province:" :items="province_options"
-                      variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_province" label="Province:" :items="province_options"
+                      variant="outlined" type="text" required></v-select>
                   </v-col>
                 </v-row>
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_municipality" label="Municipality"
-                      :items="municipality_options" variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_municipality" label="Municipality"
+                      :items="municipality_options" variant="outlined" type="text" required></v-select>
                   </v-col>
 
                   <v-col style="padding: 10px 15px">
-                    <v-combobox v-model="model.owner.owner_barangay" label="Barangay" :items="barangay_options"
-                      variant="outlined" type="text" required></v-combobox>
+                    <v-select v-model="model.owner.owner_barangay" label="Barangay" :items="barangay_options"
+                      variant="outlined" type="text" required></v-select>
                   </v-col>
                 </v-row>
 
@@ -117,8 +117,8 @@
 
                 <v-row>
                   <v-col style="padding: 10px 15px">
-                    <v-text-field v-model="model.establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-text-field>
+                    <v-select :items="barangay_options" v-model="model.establishment.establishment_address"
+                      label="Establishment Address" variant="outlined" required></v-select>
                   </v-col>
                 </v-row>
 
@@ -185,14 +185,17 @@
                 </v-col>
 
                 <v-row v-for="(establishment, index) in additional_establishments" :key="index">
-                  <v-col style="margin-top: 20px" cols="12" md="12">
+                  <v-col style="margin-top: 40px">
+                    <h3 class="text-center"> New Establishment </h3>
+                  </v-col>
+                  <v-col cols="12" md="12">
                     <v-text-field v-model="establishment.establishment_name"
                       :label="'Establishment Name ' + (index + 2)" variant="outlined" required></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="establishment.establishment_address" label="Establishment Address"
-                      variant="outlined" required></v-text-field>
+                    <v-select :items="barangay_options" v-model="establishment.establishment_address"
+                      label="Establishment Address" variant="outlined" required></v-select>
                   </v-col>
 
                   <v-col cols="12" md="6">
@@ -488,6 +491,7 @@
 </template>
 
 <script>
+import { provinceOptions, municipalityOptions, barangayOptions } from '../../options';
 import axios from "axios";
 import html2canvas from 'html2canvas';
 
@@ -534,7 +538,7 @@ export default {
         },
 
         payment: {
-          owner_id: null,
+          establishment_id: null,
           payment_name: null,
           payment_amount: null,
           payment_method: null,
@@ -553,183 +557,13 @@ export default {
       additional_establishments: [],
       owner_gender_options: ["M", "F"],
       owner_civil_status_options: ["Single", "Married", "Divorced", "Widowed"],
-      province_options: [
-        "Abra",
-        "Agusan del Norte",
-        "Agusan del Sur",
-        "Aklan",
-        "Albay",
-        "Antique",
-        "Apayao",
-        "Aurora",
-        "Basilan",
-        "Bataan",
-        "Batanes",
-        "Batangas",
-        "Benguet",
-        "Biliran",
-        "Bohol",
-        "Bukidnon",
-        "Bulacan",
-        "Cagayan",
-        "Camarines Norte",
-        "Camarines Sur",
-        "Camiguin",
-        "Capiz",
-        "Catanduanes",
-        "Cavite",
-        "Cebu",
-        "Cotabato",
-        "Davao de Oro (Compostela Valley)",
-        "Davao del Norte",
-        "Davao del Sur",
-        "Davao Occidental",
-        "Davao Oriental",
-        "Dinagat Islands",
-        "Eastern Samar",
-        "Guimaras",
-        "Ifugao",
-        "Ilocos Norte",
-        "Ilocos Sur",
-        "Iloilo",
-        "Isabela",
-        "Kalinga",
-        "La Union",
-        "Laguna",
-        "Lanao del Norte",
-        "Lanao del Sur",
-        "Leyte",
-        "Maguindanao del Norte",
-        "Maguindanao del Sur",
-        "Marinduque",
-        "Masbate",
-        "Misamis Occidental",
-        "Misamis Oriental",
-        "Mountain Province",
-        "Negros Occidental",
-        "Negros Oriental",
-        "Northern Samar",
-        "Nueva Ecija",
-        "Nueva Vizcaya",
-        "Occidental Mindoro",
-        "Oriental Mindoro",
-        "Palawan",
-        "Pampanga",
-        "Pangasinan",
-        "Quezon",
-        "Quirino",
-        "Rizal",
-        "Romblon",
-        "Samar",
-        "Sarangani",
-        "Siquijor",
-        "Sorsogon",
-        "South Cotabato",
-        "Southern Leyte",
-        "Sultan Kudarat",
-        "Sulu",
-        "Surigao del Norte",
-        "Surigao del Sur",
-        "Tarlac",
-        "Tawi-Tawi",
-        "Zambales",
-        "Zamboanga del Norte",
-        "Zamboanga del Sur",
-        "Zamboanga Sibugay",
-      ],
-      municipality_options: [
-        "Cabusao",
-        "Del Gallego",
-        "Lupi",
-        "Ragay",
-        "Sipocot",
-        "Gainza",
-        "Libmanan",
-        "Milaor",
-        "Minalabac",
-        "Pamplona",
-        "Pasacao",
-        "San Fernando",
-        "Bombon",
-        "Calabanga",
-        "Camaligan",
-        "Canaman",
-        "Magarao",
-        "Ocampo",
-        "Pili",
-        "Caramoan",
-        "Garchitorena",
-        "Goa",
-        "Lagonoy",
-        "Presentacion",
-        "Sagnay",
-        "San Jose",
-        "Siruma",
-        "Tigaon",
-        "Tinambac",
-        "Baao",
-        "Balatan",
-        "Bato",
-        "Buhi",
-        "Bula",
-        "Nabua",
-        "Naga City",
-      ],
-      barangay_options: [
-        "Agaas",
-        "Antolon",
-        "Bacgong",
-        "Bahay",
-        "Bikal",
-        "Binanuahan",
-        "Cabacongan",
-        "Cadong",
-        "Colongcogong",
-        "Canatuan",
-        "Caputatan",
-        "Gogon",
-        "Daraga",
-        "Gata",
-        "Gibgos",
-        "Guijalo",
-        "Hanopol",
-        "Hanoy",
-        "Haponan",
-        "Ilawod",
-        "Ili-Centro",
-        "Lidong",
-        "Lubas",
-        "Malabog",
-        "Maligaya",
-        "Mampirao",
-        "Mandiclum",
-        "Maqueda",
-        "Minalaba",
-        "Oring",
-        "Oroc-Osoc",
-        "Pagolinan",
-        "Pandanan",
-        "Paniman",
-        "Patag-Belen",
-        "Pili-Centro",
-        "Pili-Tabiguian",
-        "Poloan",
-        "Salvacion",
-        "San Roque",
-        "San Vicente",
-        "Santa Cruz",
-        "Solnopan",
-        "Tabgon",
-        "Tabiguian",
-        "Tabog",
-        "Tawog",
-        "Toboan",
-        "Terogo",
-      ],
-      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"],
+      province_options: provinceOptions,
+      municipality_options: municipalityOptions,
+      barangay_options: barangayOptions,
+      establishment_options: ["Hotel", "Homestay", "Resort", "Inn"].sort(),
     };
   },
-  methods: { 
+  methods: {
     formatDateToYYYYMMDD(dateString) {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -786,33 +620,24 @@ export default {
         const establishmentData = {
           owner_id: owner_id,
           establishment_email: this.model.establishment.establishment_email,
-          establishment_capacity:
-            this.model.establishment.establishment_capacity,
-          establishment_total_room:
-            this.model.establishment.establishment_total_room,
-          establishment_contact_number:
-            this.model.establishment.establishment_contact_number,
+          establishment_capacity: this.model.establishment.establishment_capacity,
+          establishment_total_room: this.model.establishment.establishment_total_room,
+          establishment_contact_number: this.model.establishment.establishment_contact_number,
           establishment_type: this.model.establishment.establishment_type,
           establishment_address: this.model.establishment.establishment_address,
           show: "Private",
           establishment_name: this.model.establishment.establishment_name,
         };
 
-        console.log(establishmentData);
-
         // INSERT ESTABLISHMENT DATA
         const establishmentResponse = await axios.post(
           "http://127.0.0.1:8000/api/establishment",
           establishmentData
         );
+
         console.log("Establishment data:", establishmentResponse.data);
         const establishment_id = establishmentResponse.data.Establishment.id;
         this.establishment = establishmentResponse.data.Establishment;
-
-        console.log("Owner Data: " + this.owner);
-        console.log("Establishment Data: " + this.establishment);
-        console.log("Membership Data: " + this.membership);
-        console.log("Payment Data: " + this.payment);
 
         console.log("Owner ID: " + owner_id);
         console.log("Establishment ID: " + establishment_id);
@@ -825,7 +650,7 @@ export default {
     },
     async submitPayment() {
       const paymentData = {
-        owner_id: this.owner.id,
+        establishment_id: this.establishment.id,
         payment_name:
           this.owner.owner_first_name +
           " " +
@@ -835,20 +660,14 @@ export default {
         payment_type: this.model.payment.payment_type,
         reference_number: this.model.payment.reference_number,
         payment_date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
-        establishment_name: this.establishment.establishment_name,
-
       };
-
-      console.log(paymentData);
 
       const membershipData = {
-        membership_status: "Active",
+        membership_status: "Pending",
         membership_date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
         establishment_id: this.establishment.id,
-        establishment_name: this.model.establishment.establishment_name,
+        establishment_name: this.model.establishment.establishment_name
       };
-      console.log(membershipData);
-
       // INSERT PAYMENT DATA
       const paymentResponse = await axios.post(
         "http://127.0.0.1:8000/api/membership_payment",
@@ -863,7 +682,7 @@ export default {
         "http://127.0.0.1:8000/api/membership",
         membershipData
       );
-      console.log("Payment data:", membershipResponse.data);
+      console.log("Membership data:", membershipResponse.data);
       const membership_id = membershipResponse.data.Membership.id;
       this.membership = membershipResponse.data.Membership;
 
@@ -871,28 +690,28 @@ export default {
       console.log("Membership ID: " + membership_id);
 
       this.model.owner.owner_first_name = "",
-        this.model.owner.owner_middle_name = "",
-        this.model.owner.owner_last_name = "",
-        this.model.owner.owner_contact_number = "",
-        this.model.owner.owner_email = "",
-        this.model.owner.owner_age = "",
-        this.model.owner.owner_province = "",
-        this.model.owner.owner_municipality = "",
-        this.model.owner.owner_barangay = "",
-        this.model.owner.owner_civil_status = "",
-        this.model.owner.owner_gender = "",
-        this.model.owner.owner_birthdate = "",
+      this.model.owner.owner_middle_name = "",
+      this.model.owner.owner_last_name = "",
+      this.model.owner.owner_contact_number = "",
+      this.model.owner.owner_email = "",
+      this.model.owner.owner_age = "",
+      this.model.owner.owner_province = "",
+      this.model.owner.owner_municipality = "",
+      this.model.owner.owner_barangay = "",
+      this.model.owner.owner_civil_status = "",
+      this.model.owner.owner_gender = "",
+      this.model.owner.owner_birthdate = "",
 
-        this.model.establishment.establishment_name = "",
-        this.model.establishment.establishment_capacity = "",
-        this.model.establishment.establishment_total_room = "",
-        this.model.establishment.establishment_address = "",
-        this.model.establishment.establishment_email = "",
-        this.model.establishment.establishment_contact_number = "",
-        this.model.establishment.establishment_type = "",
-        this.model.establishment.establishment_description = "",
+      this.model.establishment.establishment_name = "",
+      this.model.establishment.establishment_capacity = "",
+      this.model.establishment.establishment_total_room = "",
+      this.model.establishment.establishment_address = "",
+      this.model.establishment.establishment_email = "",
+      this.model.establishment.establishment_contact_number = "",
+      this.model.establishment.establishment_type = "",
+      this.model.establishment.establishment_description = "",
 
-        this.paymentDialog = false;
+      this.paymentDialog = false;
       this.paymentReceiptDialog = true;
     },
     async downloadReceipt() {

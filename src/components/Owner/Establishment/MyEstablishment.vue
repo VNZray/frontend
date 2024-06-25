@@ -77,202 +77,36 @@
     </v-container>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import axios from 'axios';
-
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/room';
-
-const dialog = ref(false);
-const isEditing = ref(false);
-const editIndex = ref(null);
-const rooms = ref([]);
-const newRoom = ref({
-    id: null,
-    number: '',
-    price: '',
-    details: [
-        { alt: 'Capacity', text: '' },
-        { alt: 'Number of Beds', text: '' },
-        { alt: 'Amenities', text: '' }
-    ],
-    image: ''
-});
-
-const searchQuery = ref('');
-
-const filteredRooms = computed(() => {
-    if (!searchQuery.value) {
-        return rooms.value;
-    }
-    return rooms.value.filter(room => room.number.includes(searchQuery.value));
-});
-
-const roomPairs = computed(() => {
-    const pairs = [];
-    for (let i = 0; i < rooms.value.length; i += 2) {
-        pairs.push(rooms.value.slice(i, i + 2));
-    }
-    return pairs;
-});
-
-const filteredRoomPairs = computed(() => {
-    const pairs = [];
-    for (let i = 0; i < filteredRooms.value.length; i += 2) {
-        pairs.push(filteredRooms.value.slice(i, i + 2));
-    }
-    return pairs;
-});
-
-const openDialog = (index, room = null) => {
-    if (index !== null) {
-        isEditing.value = true;
-        editIndex.value = index;
-        newRoom.value = { ...room, id: room.id }; // Copy room data including id
-    } else {
-        isEditing.value = false;
-        newRoom.value = {
-            id: null,
-            number: '',
-            price: '',
-            details: [
-                { alt: 'Capacity', text: '' },
-                { alt: 'Number of Beds', text: '' },
-                { alt: 'Amenities', text: '' }
-            ],
-            image: ''
+<script>
+export default {
+    data() {
+        return {
+            establishment: {},
+            rooms: [],
         };
-    }
-    dialog.value = true;
+    },
+    methods: {
+        fetchEstablishment() {
+
+        },
+        fetchRooms() {
+
+        },
+        addRoom() {
+
+        },
+        updateRoom() {
+
+        },
+        deleteRoom() {
+
+        },
+    },
+    created() {
+        this.fetchEstablishment();
+        this.fetchRooms();
+    },
 };
-
-const saveRoom = async () => {
-    if (isEditing.value) {
-        await updateRoom();
-    } else {
-        await createRoom();
-    }
-    dialog.value = false;
-};
-
-const createRoom = async () => {
-    try {
-        const response = await axios.post('/', {
-            Room_Number: newRoom.value.number,
-            Room_Price: newRoom.value.price,
-            Room_Capacity: newRoom.value.details[0].text,
-            Number_Of_Beds: newRoom.value.details[1].text,
-            Room_Amenities: newRoom.value.details[2].text
-        });
-        if (response.status === 200) {
-            console.log('Room created successfully');
-            fetchRooms();
-        } else {
-            console.error('Failed to create room');
-        }
-    } catch (error) {
-        console.error('Error creating room:', error);
-    }
-};
-
-const updateRoom = async () => {
-    try {
-        const response = await axios.put(`/${newRoom.value.id}/edit`, {
-            Room_Number: newRoom.value.number,
-            Room_Price: newRoom.value.price,
-            Room_Capacity: newRoom.value.details[0].text,
-            Number_Of_Beds: newRoom.value.details[1].text,
-            Room_Amenities: newRoom.value.details[2].text
-        });
-        if (response.status === 200) {
-            console.log('Room updated successfully');
-            fetchRooms();
-        } else {
-            console.error('Failed to update room');
-        }
-    } catch (error) {
-        console.error('Error updating room:', error);
-    }
-};
-
-const deleteRoom = async (roomId) => {
-    try {
-        const response = await axios.delete(`/${roomId}/delete`);
-        if (response.status === 200) {
-            console.log('Room deleted successfully');
-            fetchRooms();
-        } else {
-            console.error('Failed to delete room');
-        }
-    } catch (error) {
-        console.error('Error deleting room:', error);
-    }
-};
-
-const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            newRoom.value.image = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
-const establishmentName = ref("Name of Establishment");
-const profileImage = ref(null);
-
-const editEstablishmentName = () => {
-    const newName = prompt("Enter new name:");
-    if (newName) {
-        establishmentName.value = newName;
-    }
-};
-
-const editProfileImage = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                profileImage.value = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    input.click();
-};
-
-const fetchRooms = async () => {
-    try {
-        const response = await axios.get('/');
-        if (response.data.status === 200) {
-            rooms.value = response.data.rooms.map(room => ({
-                id: room.id, // Include id from backend response
-                number: room.Room_Number,
-                price: room.Room_Price,
-                details: [
-                    { alt: 'Capacity', text: room.Room_Capacity },
-                    { alt: 'Number of Beds', text: room.Number_Of_Beds },
-                    ...room.Room_Amenities.split(',').map(amenity => ({ alt: 'Amenity', text: amenity.trim() }))
-                ],
-                image: '' // Placeholder for image URL or path
-            }));
-        } else {
-            console.error('Failed to fetch rooms:', response.data.message);
-        }
-    } catch (error) {
-        console.error('Failed to fetch rooms:', error);
-    }
-};
-
-onMounted(() => {
-    fetchRooms();
-});
 </script>
 
 <style scoped>

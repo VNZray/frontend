@@ -1,9 +1,7 @@
-<script setup>
-import MembersLayout from '../../layouts/MembersLayout.vue';
-</script>
-
 <template>
-          <AdminNavigation />
-
-    <MembersLayout />
+    <v-container>
+        <h1 style="color: #1E4E72;">Members</h1>
+    </v-container>
+    <AdminNavigation />
+    <MemberComponent />
 </template>

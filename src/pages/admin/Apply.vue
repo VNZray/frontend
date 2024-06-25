@@ -1,8 +1,7 @@
-<script setup>
-import ApplyLayouts from '../../layouts/ApplyLayouts.vue';
-</script>
-
 <template>
+    <v-container>
+        <h1 style="color: #1E4E72;">Apply</h1>
+    </v-container>
     <AdminNavigation />
-    <ApplyLayouts />
+    <ApplyComponent />
 </template>
