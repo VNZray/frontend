@@ -13,7 +13,7 @@
         name: 'OwnerReservation',
         params: { owner_id: account.owner_id },
       }"></v-list-item>
-      <v-list-item prepend-icon="mdi-food" title="Menu"
+      <v-list-item prepend-icon="mdi-food" title="Menu Management"
         :to="{ name: 'OwnerMenu', params: { owner_id: account.owner_id } }"></v-list-item>
       <v-list-item prepend-icon="mdi-receipt" title="Order"
         :to="{ name: 'OwnerOrder', params: { owner_id: account.owner_id } }"></v-list-item>

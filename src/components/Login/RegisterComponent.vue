@@ -38,7 +38,7 @@
                 <v-row>
                   <v-col style="padding: 10px 15px;">
                     <v-text-field prepend-inner-icon="mdi-phone" label="Contact Number:" variant="outlined" type="text"
-                      id="contact_number" name="contact_number" v-model="model.guest.contact_number"
+                      id="contact_number" name="contact_number" v-model="model.guest.contact_number" maxlength="13"
                       required></v-text-field>
                   </v-col>
   

@@ -52,7 +52,7 @@
                 <v-row>
                   <v-col style="padding: 10px 15px">
                     <v-text-field v-model="model.owner.owner_contact_number" label="Contact Number:"
-                      variant="outlined"></v-text-field>
+                      variant="outlined"  maxlength="13"></v-text-field>
                   </v-col>
 
                   <v-col style="padding: 10px 15px">
@@ -204,7 +204,7 @@
                   </v-col>
 
                   <v-col cols="12" md="6">
-                    <v-text-field v-model="establishment.establishment_contact_number"
+                    <v-text-field v-model="establishment.establishment_contact_number" maxlength="13"
                       label="Establishment Contact Number" variant="outlined" type="text" required></v-text-field>
                   </v-col>
 
