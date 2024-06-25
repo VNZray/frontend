@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       report: false,
-      selectedMonth: new Date().getMonth() + 1, // Default to current month
+      selectedMonth: new Date().getMonth() + 1, // Default to current monthS
       monthlyRevenue: 0,
       yearlyRevenue: 0,
       search: '',

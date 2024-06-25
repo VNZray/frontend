@@ -86,13 +86,15 @@
             <v-card elevation="6" max-width="430" max-height="540" min-height="540">
               <v-img height="250" :src="menuItem.menuitem_image" cover></v-img>
               <v-card-item>
-                <v-card-title class="text-left">{{ menuItem.menuitem_name }} <p style="color: red;">{{
-                  menuItem.menuitem_price }} Pesos</p> </v-card-title>
+                <v-card-title class="text-center">{{ menuItem.menuitem_name }}
+                  <p style="color: red;">{{
+                    menuItem.menuitem_price }} Pesos</p>
+                </v-card-title>
               </v-card-item>
               <v-card-text style="padding-bottom: 0">
-                <p style="min-height: 60px;" class="text-left">{{ menuItem.menuitem_description }}</p>
+                <p style="min-height: 60px;" class="text-center">{{ menuItem.menuitem_description }}</p>
               </v-card-text>
-              <v-card-title class="text-left">Ingredients</v-card-title>
+              <v-card-title class="text-center">Ingredients</v-card-title>
               <div class="px-4 mb-2">
                 <v-chip-group>
                   <v-chip color="primary" v-for="ingredient in menuItem.ingredients" :key="ingredient.id">
@@ -106,7 +108,7 @@
                     <v-col>
                       <v-btn prepend-icon="mdi-delete" width="100%" color="red"
                         @click="confirmDeleteMenuItem(menuItem)">
-                        Remove
+                        Remove    
                       </v-btn>
                     </v-col>
                     <v-col>
@@ -136,9 +138,6 @@
       <v-card>
         <v-card-title><br>Create New Menu</v-card-title>
         <v-card-text>
-          <ul v-if="Object.keys(errorlist).length > 0">
-            <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
-          </ul>
           <v-text-field variant="outlined" v-model="model.Menu.menu_name" label="Menu Name"></v-text-field>
           <v-select label="Select Accommodation" :items="establishments.map(est => est.establishment_name)"
             v-model="selectedEstablishmentName" variant="outlined"></v-select>
@@ -155,16 +154,13 @@
       <v-card>
         <v-card-title><br>Create New Menu Item</v-card-title>
         <v-card-text>
-          <ul v-if="Object.keys(errorlist).length > 0">
-            <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
-          </ul>
           <v-file-input variant="outlined" v-model="filename" label="Upload Image"></v-file-input>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_name" label="Menu Item Name"></v-text-field>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_description"
-            label="Description"></v-text-field>
+            label="Description (OPTIONAL)"></v-text-field>
           <v-text-field variant="outlined" v-model="model.MenuItem.menuitem_price" label="Price"></v-text-field>
-          <v-autocomplete variant="outlined" v-model="selectedIngredients" :items="ingredientNames" label="Ingredients"
-            multiple outlined chips deletable-chips></v-autocomplete>
+          <v-autocomplete variant="outlined" v-model="selectedIngredients" :items="ingredientNames"
+            label="Ingredients (OPTIONAL)" multiple outlined chips deletable-chips></v-autocomplete>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="createItemDialog = false">Cancel</v-btn>
@@ -178,9 +174,6 @@
       <v-card>
         <v-card-title>Edit MenuItem</v-card-title>
         <v-card-text>
-          <ul v-if="Object.keys(errorlist).length > 0">
-            <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
-          </ul>
           <v-text-field variant="outlined" v-model="selectedMenuItem.menuitem_name"
             label="Menu Item Name"></v-text-field>
           <v-text-field variant="outlined" v-model="selectedMenuItem.menuitem_description"
@@ -285,11 +278,9 @@
       <v-card>
         <v-card-title><br>{{ editIngredientMode ? 'Edit' : 'Add' }} Ingredient</v-card-title>
         <v-card-text>
-          <ul v-if="Object.keys(errorlist).length > 0">
-            <li v-for="(error, index) in errorlist" :key="index">{{ error[0] }}</li>
-          </ul>
           <v-text-field variant="outlined" v-model="ingredientForm.ingredient_name"
             label="Ingredient Name"></v-text-field>
+
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="saveIngredient">Save</v-btn>
@@ -304,6 +295,7 @@
         <v-card-title>Confirm Delete</v-card-title>
         <v-card-text>
           Are you sure you want to delete {{ selectedIngredient.ingredient_name }}?
+
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="deleteIngredient">Delete</v-btn>
@@ -313,11 +305,12 @@
     </v-dialog>
 
     <!-- Delete Menu Dialog -->
-    <v-dialog v-model="deleteMenuDialog" max-width="500">
+    <v-dialog v-model="deleteMenuDialog" max-width="600">
       <v-card>
         <v-card-title>Confirm Delete</v-card-title>
         <v-card-text>
-          Are you sure you want to delete the selected menu?
+          <h4>Are you sure you want to delete the selected menu?</h4>
+          <h4 style="color: red">MENU ITEMS WITHIN THE MENU WILL ALSO BE DELETED</h4>
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="deleteMenu">Delete</v-btn>
@@ -892,6 +885,10 @@ h3 {
   text-align: center;
   font-size: 20px;
   color: #1E4E72;
+}
+
+h4 {
+  font-size: 16px;
 }
 
 .item_card {
